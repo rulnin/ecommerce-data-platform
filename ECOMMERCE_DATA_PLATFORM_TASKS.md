@@ -4,7 +4,7 @@
 >
 > **Level:** Intermediate | **Budget:** Rp0 | **Primary OS:** Windows 11 + WSL2 Ubuntu 24.04 LTS | **Working directory:** `~/projects/data-engineering/ecommerce-data-platform`
 >
-> **Last updated:** 2026-11-10 | **Revision:** v2 (explicit Python venv + WSL2 Docker setup) | **Status:** Phase 1 verification complete except initial commit
+> **Last updated:** 2026-11-10 | **Revision:** v2 (explicit Python venv + WSL2 Docker setup) | **Status:** Phase 1 complete; Phase 2 not started
 
 ## 0. Project overview
 
@@ -131,7 +131,7 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 
 | Week | Phase | Status | Deliverable |
 |---|---|---|---|
-| 1 | Environment + source profiling | 🟨 Verification complete; commit pending | Docker/PostgreSQL, CSV and source contract |
+| 1 | Environment + source profiling | ✅ Complete | Docker/PostgreSQL, CSV and source contract |
 | 2 | CSV batch + incremental ingestion | ⬜ Not started | Re-runnable raw ingestion |
 | 3 | REST API + SQL Server ingestion | ⬜ Not started | Three integrated sources |
 | 4 | Airflow orchestration | ⬜ Not started | Scheduled and recoverable DAG |
@@ -142,7 +142,7 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 | 9 | Analytics + recruiter documentation | ⬜ Not started | Demo, diagrams, English README |
 | 10 | Final hardening + interview rehearsal | ⬜ Not started | Release-ready portfolio |
 
-**Progress:** 0 / 10 phases complete. Update manually after verifying each phase.
+**Progress:** 1 / 10 phases complete. Update manually after verifying each phase.
 
 ### Phase 1 — Environment, repository, and dataset (Week 1)
 
@@ -161,7 +161,7 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 - [x] P1.7 Download Olist CSVs to `data/raw/` (local only); write a reproducible download script/instructions.
 - [x] P1.8 Profile CSV schemas, record counts, nulls, duplicates, keys, and business relationships; save profiling notes.
 - [x] P1.9 Write `docs/data-contracts.md` and an initial source-to-target mapping.
-- [ ] P1.10 Commit project skeleton; verify no secrets, credentials, or raw CSV files are tracked.
+- [x] P1.10 Commit project skeleton; verify no secrets, credentials, or raw CSV files are tracked.
 
 **Exit criteria:** A fresh developer can set up PostgreSQL, obtain the dataset, run a profiling script, and review the resulting source contracts. Include actual command output in Progress Log.
 
@@ -532,6 +532,16 @@ deactivate
 - Files changed: scripts/profile_dataset.py, tests/unit/test_profile_dataset.py, docs/source-profile.json, docs/source-profiling.md, docs/data-contracts.md, README.md and tracker. Existing profiler import formatting fixed while editing it; Ruff now passes.
 - Validation: 3 pytest tests passed; Ruff and compileall passed; a second profile output matched using cmp. Raw data unchanged; SQL type/load design remains Phase 2.
 - Next: P1.10. Phase 1 currently 15/16 verified; initial skeleton commit pending. User clarified authorization to complete all remaining Phase 1 tasks; earlier one-task restriction no longer applies to this turn.
+
+### 2026-11-10 — P1.10 Skeleton committed; Phase 1 complete
+- Status: PASS. All 16/16 Phase 1 checklist entries verified; 1/10 phases complete. No Phase 2 task implemented.
+- Commit: ec66aa7 — Initialize verified Phase 1 local data platform (21 source/config/docs/test files). Git author explicitly Codex <codex@openai.com> because no user author was configured; no global or repository identity configuration changed.
+- Verification: staged-file allowlist excludes .env, data/, CSVs, .venv and caches; every staged blob checked against the generated local database password and private-key header. `git diff --cached --check` passed. No proprietary/company files introduced; project sources are public Olist and new project code.
+- Final validation: 3 pytest tests passed, Ruff passed, Python compilation passed, regenerated profiling output identical. Compose configuration validates; PostgreSQL healthy on localhost and SQL/Python connection checks passed. Downloader fresh-directory network execution and existing-file preservation both verified.
+- Files changed after skeleton commit: tracker updated with actual commit evidence and verified completion; follow-up documentation commit records this checkpoint.
+- Limits: direct dependencies pinned, full transitive lock deferred. Review keys and geolocation aggregation are ingestion design decisions, not fabricated uniqueness guarantees. SQL Server/ODBC, FX, orchestration, transformations and CI remain future-phase work. make is optional and its targets were not executed because make is unavailable.
+- Service state: PostgreSQL left running; named volume retained. Stop using `docker compose stop postgres` or `docker compose down` without -v.
+- Next pending task: P2.1 — modular CSV ingestion, configuration and DB utilities, in a subsequent phase request.
 
 ## 6. Decisions & scope guardrails
 
