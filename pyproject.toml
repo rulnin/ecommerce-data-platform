@@ -1,0 +1,10 @@
+[project]
+name = "ecommerce-data-platform"
+version = "0.1.0"
+description = "Local-first e-commerce data engineering portfolio"
+requires-python = ">=3.14.4,<3.15"
+dependencies = []
+
+[tool.uv]
+package = false
+python-downloads = "never"

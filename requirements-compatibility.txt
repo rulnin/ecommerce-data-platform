@@ -1,0 +1,5 @@
+# Optional verification set, not a dbt project or warehouse deployment.
+-r requirements.txt
+dbt-core==1.12.6
+dbt-postgres==1.11.0
+psycopg2-binary==2.9.13
