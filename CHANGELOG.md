@@ -7,6 +7,7 @@
 - Orchestrate ingestion and operational checks with bounded LocalExecutor Airflow services.
 - Model separate item/payment facts in dbt; validate candidates before atomic consumer publication.
 - Provide eight business SQL analyses, diagrams, actual screenshots, failure evidence and hosted CI.
+- Refresh expression-index statistics for accurate selective-join estimates.
 - Measure replay/index behavior and verify warehouse backup/restore against all user tables.
 
 Scope: local portfolio, not a production deployment. Dimensional publication runs

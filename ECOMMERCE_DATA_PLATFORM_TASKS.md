@@ -4,7 +4,7 @@
 >
 > **Level:** Intermediate | **Budget:** Rp0 | **Primary OS:** Windows 11 + WSL2 Ubuntu 24.04 LTS | **Working directory:** `~/projects/data-engineering/ecommerce-data-platform`
 >
-> **Last updated:** 2026-11-11 | **Revision:** v2 (explicit Python venv + WSL2 Docker setup) | **Status:** Phases 1–9 complete; Phase 10 not started
+> **Last updated:** 2026-11-11 | **Revision:** v2 (explicit Python venv + WSL2 Docker setup) | **Status:** Phases 1–9 complete; Phase 10 release verification in progress
 
 ## 0. Project overview
 
@@ -140,7 +140,7 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 | 7 | Automated tests + CI | ✅ Complete | CI checks and reproducible testing |
 | 8 | Performance + observability | ✅ Complete | Measurements and runbooks |
 | 9 | Analytics + recruiter documentation | ✅ Complete | Demo, diagrams, English README |
-| 10 | Final hardening + interview rehearsal | ⬜ Not started | Release-ready portfolio |
+| 10 | Final hardening + interview rehearsal | 🔄 In progress | Clean release verification |
 
 **Progress:** 9 / 10 phases complete. Update manually after verifying each phase.
 
@@ -263,13 +263,13 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 
 ### Phase 10 — Release verification & interview readiness (Week 10)
 
-- [ ] P10.1 Perform clean-clone setup on a fresh folder; verify README instructions.
-- [ ] P10.2 Run end-to-end data ingestion, DAG, dbt build/tests, and CI successfully.
-- [ ] P10.3 Verify no secrets, proprietary SQL/data, large CSVs, unnecessary files, or internal identifiers are committed.
-- [ ] P10.4 Review SQL performance, idempotence, code quality, and cleanup/stop commands.
+- [x] P10.1 Perform clean-clone setup on a fresh folder; verify README instructions.
+- [x] P10.2 Run end-to-end data ingestion, DAG, dbt build/tests, and CI successfully.
+- [x] P10.3 Verify no secrets, proprietary SQL/data, large CSVs, unnecessary files, or internal identifiers are committed.
+- [x] P10.4 Review SQL performance, idempotence, code quality, and cleanup/stop commands.
 - [ ] P10.5 Create a versioned release/tag with a concise changelog.
-- [ ] P10.6 Rehearse interview Q&A: duplicates, checkpoints, failure recovery, source-target reconciliation, scaling.
-- [ ] P10.7 Pin repository to GitHub profile (CV update waived by user on 2026-11-11).
+- [x] P10.6 Rehearse interview Q&A: duplicates, checkpoints, failure recovery, source-target reconciliation, scaling.
+- [x] P10.7 Pin repository to GitHub profile (CV update waived by user on 2026-11-11).
 
 **Exit criteria:** Clean setup succeeds, project is demonstrable, and all stated features have evidence.
 
@@ -817,6 +817,18 @@ deactivate
 - Final validation: live eight-query/report verifier PASS; four Mermaid parse/render checks plus SVG XML/live ERD checks PASS; 58 local links/nine bash examples PASS; screenshot visually checked; source/report secret scan PASS. Shared unit/integration commands = 46/8 passed; `RUN_DB_TESTS=1 .venv/bin/python -m pytest -q` = 54 passed. Ruff lint/format (42 files), compileall and git diff --check passed. Initial unused/import formatting findings in optional capture tool were fixed/rechecked.
 - Completion: 6/6 Phase 9 tasks, 9/10 phases complete. Followed the specific all-Phase-9 request. No ingestion/model/dependency/CI changes; PostgreSQL remains healthy, other services stopped and ephemeral browser removed. Source data/volumes retained. Changes remain uncommitted alongside earlier work; no remote push in this phase.
 - Next: P10.1 — clean-clone release verification in a fresh folder, in the next requested phase.
+
+### 2026-11-11 — P10.1–P10.4 Clean release verification and review
+- Status: PASS. Pushed candidate b2390cecde76366552a3221ce833351bbc27b7e4 to release/v1.0.0, then cloned it from GitHub into a clean directory. Created a fresh uv 0.13.7 venv with existing Python 3.14.4, installed pinned dbt/connector dependencies, downloaded a fresh publisher archive matching all nine reviewed hashes, and used a separate Compose project/ports/new volumes. No working volume or source snapshot reused as target state.
+- Full CSV ingestion, live historical ECB FX, project-local native ODBC setup and fresh SQL Server source extraction succeeded. Fresh dbt debug/build/docs passed 20 models + 110 tests; quality publication and eight reconciled business queries succeeded. Fresh Airflow services/metadata verified seven successful final runs, including forced failure/recovery, replay and native backfill; DAG paused afterward. 46 unit + 8 disposable DB tests passed. Candidate hosted CI succeeded: https://github.com/rulnin/ecommerce-data-platform/actions/runs/43014478035.
+- Harness issue: exported empty AIRFLOW secrets initially overrode generated .env credentials; removed those harness overrides and reran the unchanged setup. Failed attempt/retry retained in docs/phase10-evidence.json. README does not export those empty values. No Docker reinstall/socket change or interpreter replacement.
+- Review found expression-index statistics missing on the persistent target: join estimate 279935 vs actual1366 caused an item scan. Added ANALYZE to sql/init/008_lookup_indexes.sql; verified same 1366 items / BRL152653.74 using both indexes at 6.788ms smoke time, and applied the revised migration to the clean target too. This does not rewrite Phase 8 benchmark observations. No unrelated ingestion/dbt logic or dependency changes.
+- Release snapshot scan: actual root/clean .env secret matches, PAT/private-key patterns, prohibited local/CSV/archive/dump/key files, artifact sizes and source provenance reviewed. Public Olist/synthetic data and project audit IDs are intentional; no employer/private-company data. Further final Git-history scan/CI/release evidence are recorded before publication.
+- Removed only fresh review containers/network, retained their named volumes. Working PostgreSQL CSV metrics/checkpoints and synthetic quantity remain unchanged. Evidence: docs/phase10-evidence.json, docs/release-evidence/airflow.json and quality-report.json, docs/release-verification.md. Next: P10.5 publication.
+
+### 2026-11-11 — P10.6–P10.7 Rehearsal, profile and adjusted CV scope
+- Status: PASS. Added docs/interview-qa.md: evidence-based agent-led rehearsal across duplicate grain, crash/commit/checkpoints, source sequence ordering, deletes/late updates, independent financial reconciliation, publication failure, FX limits, workload scaling and coordinated recovery. Answers checked against actual source/tests and the new clean-stack exercise; no human spoken rehearsal claimed.
+- User explicitly waived CV updates to focus on the project. P10.7 scope now records that waiver. User pinned the repository; authenticated GitHub GraphQL confirmed rulnin/ecommerce-data-platform in profile pinnedItems. No CV/profile text was edited by this agent. Next: P10.5 — publish versioned source/tag/release after final CI.
 
 ## 6. Decisions & scope guardrails
 

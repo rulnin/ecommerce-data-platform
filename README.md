@@ -80,9 +80,10 @@ python -m pip check
 The setup script preserves/repairs an existing venv, prohibits Python downloads,
 and seeds pip. Direct package versions are pinned; transitive dependencies are not
 fully locked. [Python compatibility evidence](docs/python-compatibility.md) records
-what was tested. Public remote content reflects the commits pushed there; local
-Phase 8/9 work must be committed/published before a clean clone can include it.
-Clean-clone release verification belongs to Phase 10 and is not claimed here.
+what was tested. A fresh GitHub clone and independent full-stack setup were verified for the
+release; see [clean-clone and release evidence](docs/release-verification.md).
+The local portfolio release is versioned as v1.0.0; direct dependency pins are
+retained without claiming a fully locked transitive environment.
 
 Create `.env` without overwriting an existing configuration:
 
@@ -92,8 +93,9 @@ from pathlib import Path
 import secrets
 p = Path('.env')
 if not p.exists():
-    p.write_text(Path('.env.example').read_text().replace(
-        'POSTGRES_PASSWORD=\n', 'POSTGRES_PASSWORD=' + secrets.token_hex(24) + '\n'))
+    with p.open('x') as stream:
+        stream.write(Path('.env.example').read_text().replace(
+            'POSTGRES_PASSWORD=\n', 'POSTGRES_PASSWORD=' + secrets.token_hex(24) + '\n'))
     p.chmod(0o600)
 PY
 docker compose config --quiet
@@ -187,9 +189,9 @@ RUN_DB_TESTS=1 python -m pytest -q     # complete lightweight suite
 ```
 
 Both CI jobs use these same check scripts for lint, format, compilation and tests.
-[Testing scope/style](docs/testing.md) explains dependencies and cleanup. The hosted
-run linked above verifies the Phase 7 test commit; it is not a claim that later
-uncommitted documentation or scripts already passed hosted CI.
+[Testing scope/style](docs/testing.md) explains dependencies and cleanup. The hosted run linked above preserves Phase 7 evidence. The
+[release verification](docs/release-verification.md) records the fresh candidate
+run and final release CI/commit separately.
 
 Heavier explicit verification commands are `python -m scripts.verify_phase5`,
 `python -m scripts.verify_phase6`, and `python -m scripts.verify_phase8`. They
@@ -204,13 +206,15 @@ source evidence remains available without repeating completed source mutations.
 - [Trade-offs and current limits](docs/trade-offs.md)
 - [Replay, backup/restore, resources and stop commands](docs/runbook.md)
 - [Four-minute walkthrough and CV/LinkedIn drafts](docs/walkthrough.md)
+- [Release verification and interview Q&A](docs/release-verification.md)
 - [Canonical checklist and implementation evidence](ECOMMERCE_DATA_PLATFORM_TASKS.md)
 
 Stop heavier services with `bash scripts/airflow.sh stop`; PostgreSQL remains
 available. `docker compose stop postgres` stops it while preserving its volume.
 Never delete working volumes as a recovery shortcut. Use `deactivate` to leave
 the host venv. No AWS deployment, HA, production SLA or fully automated dimensional
-orchestration is claimed; see the trade-offs and remaining Phase 10 work.
+orchestration is claimed; see the trade-offs and completed local
+[release verification](docs/release-verification.md).
 
 ## Dataset rights
 

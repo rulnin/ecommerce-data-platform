@@ -1,0 +1,895 @@
+{
+  "run_id": "bd7fbfb4-ecb3-4ad9-ae00-210bd4731f1e",
+  "started_at": "2026-11-11T11:49:08.359905+00:00",
+  "status": "PASS",
+  "published": true,
+  "checks": [
+    {
+      "check_name": "source_count_drift",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "row_count_reconciliation",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "required_financial_fields",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "nonnegative_amounts",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "missing_order_mapping",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "missing_inventory_mapping",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "financial_reconciliation",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_customers_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_customers_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_customers_customer_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_customers_customer_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_orders_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_orders_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_orders_order_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_orders_order_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_orders_customer_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_orders_customer_id__customer_id__ref_stg_customers_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_orders_order_purchase_timestamp",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_orders_order_status",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "accepted_values_stg_orders_order_status__created__approved__invoiced__processing__shipped__delivered__unavailable__canceled",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_order_items_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_items_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_items_order_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_order_items_order_id__order_id__ref_stg_orders_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_items_order_item_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_items_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_order_items_product_id__product_id__ref_stg_products_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_items_seller_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_order_items_seller_id__seller_id__ref_stg_sellers_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_items_price",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_items_freight_value",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_grain_stg_order_items_order_id__order_item_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_order_payments_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_payments_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_payments_order_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_order_payments_order_id__order_id__ref_stg_orders_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_payments_payment_sequential",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_payments_payment_value",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_payments_payment_type",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "accepted_values_stg_order_payments_payment_type__credit_card__boleto__voucher__debit_card__not_defined",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_grain_stg_order_payments_order_id__payment_sequential",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_order_reviews_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_order_reviews_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_order_reviews_order_id__order_id__ref_stg_orders_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_products_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_products_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_products_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_products_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_sellers_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_sellers_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_sellers_seller_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_sellers_seller_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_category_translation_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_category_translation_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_category_translation_product_category_name",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_category_translation_product_category_name",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_geolocation_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_geolocation_source_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_fx_rates_rate_date",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_fx_rates_rate",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_fx_rates_base_currency",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "accepted_values_stg_fx_rates_base_currency__USD",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_fx_rates_quote_currency",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "accepted_values_stg_fx_rates_quote_currency__BRL",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_fx_rates_provider",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "accepted_values_stg_fx_rates_provider__ECB",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_grain_stg_fx_rates_base_currency__quote_currency__rate_date",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_fx_requests_requested_date",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_fx_requests_requested_date",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_fx_requests_rate_date__rate_date__ref_stg_fx_rates_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_inventory_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_inventory_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_inventory_product_id__product_id__ref_stg_products_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_inventory_is_synthetic",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "accepted_values_stg_inventory_is_synthetic__False__True",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_inventory_is_deleted",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_inventory_quantity",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_stg_stock_movements_movement_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_stock_movements_movement_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_stock_movements_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_stg_stock_movements_product_id__product_id__ref_stg_products_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_stock_movements_is_synthetic",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "accepted_values_stg_stock_movements_is_synthetic__False__True",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_stg_stock_movements_is_deleted",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_dim_customer_customer_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_dim_customer_customer_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_dim_product_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_dim_product_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_dim_seller_seller_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_dim_seller_seller_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_dim_date_date_day",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_dim_date_date_day",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_fct_order_items_order_item_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_order_items_order_item_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_order_items_customer_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_fct_order_items_customer_id__customer_id__ref_dim_customer_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_order_items_purchase_date",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_fct_order_items_purchase_date__date_day__ref_dim_date_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_order_items_product_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_fct_order_items_product_id__product_id__ref_dim_product_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_order_items_seller_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_fct_order_items_seller_id__seller_id__ref_dim_seller_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_fct_payments_payment_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_payments_payment_key",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_payments_customer_id",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_fct_payments_customer_id__customer_id__ref_dim_customer_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_payments_purchase_date",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "relationships_fct_payments_purchase_date__date_day__ref_dim_date_",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "unique_fct_daily_sales_purchase_date",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    },
+    {
+      "check_name": "not_null_fct_daily_sales_purchase_date",
+      "expected": 0,
+      "actual": 0,
+      "status": "PASS",
+      "dbt_status": "pass",
+      "sample_failing_keys": []
+    }
+  ],
+  "count_baseline": {
+    "orders": 99441,
+    "order_items": 112650,
+    "order_payments": 103886
+  },
+  "count_tolerance_fraction": 0.05,
+  "finished_at": "2026-11-11T11:49:22.349541+00:00"
+}

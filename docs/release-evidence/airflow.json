@@ -1,0 +1,569 @@
+{
+  "result": "PASS",
+  "runs": [
+    {
+      "run_id": "phase4_1794397859_success",
+      "date": "2017-11-24"
+    },
+    {
+      "run_id": "phase4_1794397859_failure",
+      "date": "2017-11-24"
+    },
+    {
+      "run_id": "phase4_1794397859_rerun",
+      "date": "2017-11-24"
+    },
+    {
+      "run_id": "phase4_1794397859_backfill_2017-11-25",
+      "date": "2017-11-25"
+    },
+    {
+      "run_id": "phase4_1794397859_backfill_2017-11-26",
+      "date": "2017-11-26"
+    },
+    {
+      "run_id": "backfill__2017-11-25T00:00:00+00:00",
+      "date": "2017-11-25T00:00:00Z",
+      "native_backfill": true
+    },
+    {
+      "run_id": "backfill__2017-11-26T00:00:00+00:00",
+      "date": "2017-11-26T00:00:00Z",
+      "native_backfill": true
+    }
+  ],
+  "tasks": {
+    "phase4_1794397859_success": [
+      {
+        "task_id": "csv",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "fx",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "inventory",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "transform",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "quality",
+        "state": "success",
+        "try_number": 1
+      }
+    ],
+    "phase4_1794397859_failure": [
+      {
+        "task_id": "csv",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "fx",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "inventory",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "transform",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "quality",
+        "state": "success",
+        "try_number": 4
+      }
+    ],
+    "phase4_1794397859_rerun": [
+      {
+        "task_id": "csv",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "fx",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "inventory",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "transform",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "quality",
+        "state": "success",
+        "try_number": 1
+      }
+    ],
+    "phase4_1794397859_backfill_2017-11-25": [
+      {
+        "task_id": "csv",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "fx",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "inventory",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "transform",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "quality",
+        "state": "success",
+        "try_number": 1
+      }
+    ],
+    "phase4_1794397859_backfill_2017-11-26": [
+      {
+        "task_id": "csv",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "fx",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "inventory",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "transform",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "quality",
+        "state": "success",
+        "try_number": 1
+      }
+    ],
+    "backfill__2017-11-25T00:00:00+00:00": [
+      {
+        "task_id": "csv",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "fx",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "inventory",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "transform",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "quality",
+        "state": "success",
+        "try_number": 1
+      }
+    ],
+    "backfill__2017-11-26T00:00:00+00:00": [
+      {
+        "task_id": "csv",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "fx",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "inventory",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "transform",
+        "state": "success",
+        "try_number": 1
+      },
+      {
+        "task_id": "quality",
+        "state": "success",
+        "try_number": 1
+      }
+    ]
+  },
+  "attempt_audit": [
+    [
+      "phase4_1794397859_success",
+      "csv",
+      1,
+      "success",
+      "d90aac83-3ee2-4e4f-9c13-919e41357895",
+      null
+    ],
+    [
+      "phase4_1794397859_success",
+      "fx",
+      1,
+      "success",
+      "6b16d792-49aa-451c-a76e-7a15f14289a4",
+      null
+    ],
+    [
+      "phase4_1794397859_success",
+      "inventory",
+      1,
+      "success",
+      "a49e96b6-0e65-42d5-b485-6b5dcf220edb",
+      null
+    ],
+    [
+      "phase4_1794397859_success",
+      "transform",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_success",
+      "quality",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_failure",
+      "fx",
+      1,
+      "success",
+      "3633cf4c-3246-4301-b250-a9ca0d0a29ef",
+      null
+    ],
+    [
+      "phase4_1794397859_failure",
+      "csv",
+      1,
+      "success",
+      "85518133-ac2d-486a-866f-c95bbe5cb84c",
+      null
+    ],
+    [
+      "phase4_1794397859_failure",
+      "inventory",
+      1,
+      "success",
+      "8fd1266e-b1ac-42c7-925f-5b0f03c99b1a",
+      null
+    ],
+    [
+      "phase4_1794397859_failure",
+      "transform",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_failure",
+      "quality",
+      1,
+      "failed",
+      null,
+      "RuntimeError"
+    ],
+    [
+      "phase4_1794397859_failure",
+      "quality",
+      2,
+      "failed",
+      null,
+      "RuntimeError"
+    ],
+    [
+      "phase4_1794397859_failure",
+      "quality",
+      3,
+      "failed",
+      null,
+      "RuntimeError"
+    ],
+    [
+      "phase4_1794397859_failure",
+      "quality",
+      4,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_rerun",
+      "csv",
+      1,
+      "success",
+      "febf7a12-e420-4fed-84c1-c53b4c13ac3e",
+      null
+    ],
+    [
+      "phase4_1794397859_rerun",
+      "fx",
+      1,
+      "success",
+      "97842b9f-aebd-4f0d-a380-ca354c2a0cfa",
+      null
+    ],
+    [
+      "phase4_1794397859_rerun",
+      "inventory",
+      1,
+      "success",
+      "7977117d-fe15-435e-8cbd-bba802d8d8ce",
+      null
+    ],
+    [
+      "phase4_1794397859_rerun",
+      "transform",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_rerun",
+      "quality",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-25",
+      "csv",
+      1,
+      "success",
+      "0e8a4fc8-f4e6-478a-b57a-32cb1301f78b",
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-25",
+      "fx",
+      1,
+      "success",
+      "ce327766-dce0-4070-8394-152e4edd700f",
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-25",
+      "inventory",
+      1,
+      "success",
+      "1db9d0dc-aef8-4e9e-b018-5cde0415f152",
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-25",
+      "transform",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-25",
+      "quality",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-26",
+      "inventory",
+      1,
+      "success",
+      "b4dd54e9-7f6e-431f-bf8b-364f94ca5b46",
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-26",
+      "csv",
+      1,
+      "success",
+      "6252c9dc-e6e5-44d9-b9b8-c0d0f7adc739",
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-26",
+      "fx",
+      1,
+      "success",
+      "90c9cd55-1ae3-46da-a830-e6584c96d7b1",
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-26",
+      "transform",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "phase4_1794397859_backfill_2017-11-26",
+      "quality",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "backfill__2017-11-25T00:00:00+00:00",
+      "fx",
+      1,
+      "success",
+      "21b4f70f-629f-42eb-a447-f186c1ae4454",
+      null
+    ],
+    [
+      "backfill__2017-11-25T00:00:00+00:00",
+      "csv",
+      1,
+      "success",
+      "4c44599b-1d00-4004-a77e-a42718079413",
+      null
+    ],
+    [
+      "backfill__2017-11-25T00:00:00+00:00",
+      "inventory",
+      1,
+      "success",
+      "e5cbdda6-4634-43fd-a4a5-53a8d9910e4b",
+      null
+    ],
+    [
+      "backfill__2017-11-25T00:00:00+00:00",
+      "transform",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "backfill__2017-11-25T00:00:00+00:00",
+      "quality",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "backfill__2017-11-26T00:00:00+00:00",
+      "inventory",
+      1,
+      "success",
+      "bf9eba38-a9c0-4e3f-8a84-427fb29585cb",
+      null
+    ],
+    [
+      "backfill__2017-11-26T00:00:00+00:00",
+      "csv",
+      1,
+      "success",
+      "9cec3cf5-021d-4463-9e1e-29e5566de476",
+      null
+    ],
+    [
+      "backfill__2017-11-26T00:00:00+00:00",
+      "fx",
+      1,
+      "success",
+      "281a3aa5-1a10-42e7-9de7-38e1f4bf50b7",
+      null
+    ],
+    [
+      "backfill__2017-11-26T00:00:00+00:00",
+      "transform",
+      1,
+      "success",
+      null,
+      null
+    ],
+    [
+      "backfill__2017-11-26T00:00:00+00:00",
+      "quality",
+      1,
+      "success",
+      null,
+      null
+    ]
+  ],
+  "stable_csv_metrics": [
+    "99441",
+    "112650",
+    "103886",
+    "13591643.70",
+    "16008872.12",
+    "100",
+    "100",
+    "10000"
+  ],
+  "summaries": [
+    [
+      "2017-11-24",
+      "1176",
+      "1366",
+      "1214",
+      "152653.74",
+      "179200.03"
+    ],
+    [
+      "2017-11-25",
+      "499",
+      "580",
+      "538",
+      "60923.48",
+      "71897.01"
+    ],
+    [
+      "2017-11-26",
+      "391",
+      "456",
+      "411",
+      "45315.28",
+      "53939.87"
+    ]
+  ],
+  "constraints_sha256": "0521ca33b8fcf92d9cd672d25ec85fdaf95a0021116b64d193079eb334143268"
+}
