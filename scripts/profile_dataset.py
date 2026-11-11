@@ -24,7 +24,12 @@ RELATIONS = [
     ("olist_order_items_dataset", "seller_id", "olist_sellers_dataset", "seller_id"),
     ("olist_order_payments_dataset", "order_id", "olist_orders_dataset", "order_id"),
     ("olist_order_reviews_dataset", "order_id", "olist_orders_dataset", "order_id"),
-    ("olist_products_dataset", "product_category_name", "product_category_name_translation", "product_category_name"),
+    (
+        "olist_products_dataset",
+        "product_category_name",
+        "product_category_name_translation",
+        "product_category_name",
+    ),
 ]
 
 
@@ -55,9 +60,12 @@ def profile(directory):
                 for col in columns:
                     nulls[col] += row[col] == ""
                 # Hash canonical parsed field values, including quoted newlines.
-                row_hash = hashlib.sha256(json.dumps(
-                    [row[col] for col in columns], ensure_ascii=False,
-                ).encode("utf-8")).digest()
+                row_hash = hashlib.sha256(
+                    json.dumps(
+                        [row[col] for col in columns],
+                        ensure_ascii=False,
+                    ).encode("utf-8")
+                ).digest()
                 duplicate_rows += row_hash in seen_rows
                 seen_rows.add(row_hash)
                 if keys:
@@ -69,18 +77,26 @@ def profile(directory):
                     if row[col] != "":
                         values[name][col].add(row[col])
         tables[name] = {
-            "sha256": digest, "rows": count, "columns": columns,
-            "empty_fields": nulls, "candidate_key": keys,
+            "sha256": digest,
+            "rows": count,
+            "columns": columns,
+            "empty_fields": nulls,
+            "candidate_key": keys,
             "duplicate_key_rows": duplicate_keys if keys else None,
             "empty_key_rows": null_keys if keys else None,
             "exact_duplicate_rows": duplicate_rows,
         }
     relationships = []
     for child, col, parent, pcol in RELATIONS:
-        relationships.append({
-            "child": f"{child}.{col}", "parent": f"{parent}.{pcol}",
-            "unmatched_distinct_nonempty_values": len(values[child][col] - values[parent][pcol]),
-        })
+        relationships.append(
+            {
+                "child": f"{child}.{col}",
+                "parent": f"{parent}.{pcol}",
+                "unmatched_distinct_nonempty_values": len(
+                    values[child][col] - values[parent][pcol]
+                ),
+            }
+        )
     return {"tables": tables, "relationships": relationships}
 
 
@@ -95,7 +111,9 @@ def main():
     for name, table in result["tables"].items():
         print(f"{name}: rows={table['rows']}, duplicate_key_rows={table['duplicate_key_rows']}")
     for relation in result["relationships"]:
-        print(f"{relation['child']} -> {relation['parent']}: unmatched={relation['unmatched_distinct_nonempty_values']}")
+        print(
+            f"{relation['child']} -> {relation['parent']}: unmatched={relation['unmatched_distinct_nonempty_values']}"
+        )
 
 
 if __name__ == "__main__":

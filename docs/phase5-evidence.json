@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "verified_at": "2026-11-11T10:19:53.184615+00:00",
+  "dbt_core": "1.12.6",
+  "dbt_postgres": "1.11.0",
+  "build_results": {
+    "pass": 44,
+    "success": 20
+  },
+  "models": 20,
+  "tests": 44,
+  "metrics": {
+    "raw_fact_daily_totals": [
+      112650,
+      "13591643.70",
+      "2251909.54",
+      103886,
+      "16008872.12"
+    ],
+    "days_fx_covered_uncovered": [
+      774,
+      8,
+      766
+    ]
+  },
+  "stable_replay": true,
+  "warehouse_rows_and_hashes": {
+    "dim_customer": [
+      99441,
+      "533116c42232a989cb395101cccad6f3"
+    ],
+    "dim_product": [
+      32951,
+      "ab473321a4211593895a85e14c9a130b"
+    ],
+    "dim_seller": [
+      3095,
+      "c5739f780546cdb8a1cad8ec43d2e1d5"
+    ],
+    "dim_date": [
+      774,
+      "3f7ac4e9fb47224a7fbcba81e12b50a1"
+    ],
+    "fct_order_items": [
+      112650,
+      "7cf4678c1ffe0f89323cb3362e8dd5cf"
+    ],
+    "fct_payments": [
+      103886,
+      "ae0e1c902579a2e561699905361444e8"
+    ],
+    "fct_daily_sales": [
+      774,
+      "da1e3719fbd8ca50faa6d1804015dbd8"
+    ]
+  },
+  "disposable_fixture": {
+    "late_new_item": "PASS",
+    "unchanged_item_rows_not_rewritten": "PASS",
+    "price_update": "PASS",
+    "parent_date_status_update_without_watermark": "PASS",
+    "two_items_two_payments_no_multiplication": "PASS",
+    "weekend_fx": "PASS",
+    "synthetic_tombstones_preserved": "PASS",
+    "replay": "PASS",
+    "full_refresh_equivalence": "PASS"
+  },
+  "docs_generated": true,
+  "last_command_elapsed_seconds": 0.6418442726135254
+}

@@ -1,0 +1,579 @@
+{
+  "full": {
+    "run_id": "079ff418-27d0-4623-86cc-6c719b262026",
+    "counts": {
+      "orders": {
+        "scanned": 99441,
+        "updated": 0,
+        "accepted": 99441,
+        "inserted": 99441,
+        "unchanged": 0,
+        "deduplicated": 0
+      },
+      "sellers": {
+        "scanned": 3095,
+        "updated": 0,
+        "accepted": 3095,
+        "inserted": 3095,
+        "unchanged": 0,
+        "deduplicated": 0
+      },
+      "products": {
+        "scanned": 32951,
+        "updated": 0,
+        "accepted": 32951,
+        "inserted": 32951,
+        "unchanged": 0,
+        "deduplicated": 0
+      },
+      "customers": {
+        "scanned": 99441,
+        "updated": 0,
+        "accepted": 99441,
+        "inserted": 99441,
+        "unchanged": 0,
+        "deduplicated": 0
+      },
+      "geolocation": {
+        "scanned": 1000163,
+        "updated": 0,
+        "accepted": 1000163,
+        "inserted": 738332,
+        "unchanged": 0,
+        "deduplicated": 261831
+      },
+      "order_items": {
+        "scanned": 112650,
+        "updated": 0,
+        "accepted": 112650,
+        "inserted": 112650,
+        "unchanged": 0,
+        "deduplicated": 0
+      },
+      "order_reviews": {
+        "scanned": 99224,
+        "updated": 0,
+        "accepted": 99224,
+        "inserted": 99224,
+        "unchanged": 0,
+        "deduplicated": 0
+      },
+      "order_payments": {
+        "scanned": 103886,
+        "updated": 0,
+        "accepted": 103886,
+        "inserted": 103886,
+        "unchanged": 0,
+        "deduplicated": 0
+      },
+      "category_translation": {
+        "scanned": 71,
+        "updated": 0,
+        "accepted": 71,
+        "inserted": 71,
+        "unchanged": 0,
+        "deduplicated": 0
+      }
+    }
+  },
+  "incremental": {
+    "run_id": "0de201a1-9853-4f88-9677-13426afa3222",
+    "counts": {
+      "customers": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      },
+      "orders": {
+        "scanned": 99441,
+        "accepted": 1176,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 1176,
+        "deduplicated": 0
+      },
+      "order_items": {
+        "scanned": 112650,
+        "accepted": 1366,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 1366,
+        "deduplicated": 0
+      },
+      "order_payments": {
+        "scanned": 103886,
+        "accepted": 1214,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 1214,
+        "deduplicated": 0
+      },
+      "order_reviews": {
+        "scanned": 99224,
+        "accepted": 1175,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 1175,
+        "deduplicated": 0
+      },
+      "products": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      },
+      "sellers": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      },
+      "category_translation": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      },
+      "geolocation": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      }
+    }
+  },
+  "reruns": [
+    {
+      "run_id": "42b21930-c321-4526-80c3-e1fa2cfa6196",
+      "counts": {
+        "customers": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "orders": {
+          "scanned": 99441,
+          "accepted": 1176,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1176,
+          "deduplicated": 0
+        },
+        "order_items": {
+          "scanned": 112650,
+          "accepted": 1366,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1366,
+          "deduplicated": 0
+        },
+        "order_payments": {
+          "scanned": 103886,
+          "accepted": 1214,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1214,
+          "deduplicated": 0
+        },
+        "order_reviews": {
+          "scanned": 99224,
+          "accepted": 1175,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1175,
+          "deduplicated": 0
+        },
+        "products": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "sellers": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "category_translation": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "geolocation": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        }
+      }
+    },
+    {
+      "run_id": "e8b1f825-ee3e-4a96-96ae-6c84fa38ceb4",
+      "counts": {
+        "customers": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "orders": {
+          "scanned": 99441,
+          "accepted": 1176,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1176,
+          "deduplicated": 0
+        },
+        "order_items": {
+          "scanned": 112650,
+          "accepted": 1366,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1366,
+          "deduplicated": 0
+        },
+        "order_payments": {
+          "scanned": 103886,
+          "accepted": 1214,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1214,
+          "deduplicated": 0
+        },
+        "order_reviews": {
+          "scanned": 99224,
+          "accepted": 1175,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1175,
+          "deduplicated": 0
+        },
+        "products": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "sellers": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "category_translation": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "geolocation": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        }
+      }
+    },
+    {
+      "run_id": "70a9c834-6bc2-4eff-bbe4-5a86e8fbb8a6",
+      "counts": {
+        "customers": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "orders": {
+          "scanned": 99441,
+          "accepted": 1176,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1176,
+          "deduplicated": 0
+        },
+        "order_items": {
+          "scanned": 112650,
+          "accepted": 1366,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1366,
+          "deduplicated": 0
+        },
+        "order_payments": {
+          "scanned": 103886,
+          "accepted": 1214,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1214,
+          "deduplicated": 0
+        },
+        "order_reviews": {
+          "scanned": 99224,
+          "accepted": 1175,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 1175,
+          "deduplicated": 0
+        },
+        "products": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "sellers": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "category_translation": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        },
+        "geolocation": {
+          "scanned": 0,
+          "accepted": 0,
+          "inserted": 0,
+          "updated": 0,
+          "unchanged": 0,
+          "deduplicated": 0,
+          "unchanged_file_skipped": true
+        }
+      }
+    }
+  ],
+  "failed": {
+    "run_id": "2801b170-ee85-4869-abc2-f9ed767cce29",
+    "code": "simulated_failure"
+  },
+  "recovered": {
+    "run_id": "903a5486-296d-404c-8b4f-e2502a04af09",
+    "counts": {
+      "customers": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      },
+      "orders": {
+        "scanned": 99441,
+        "accepted": 1176,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 1176,
+        "deduplicated": 0
+      },
+      "order_items": {
+        "scanned": 112650,
+        "accepted": 1366,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 1366,
+        "deduplicated": 0
+      },
+      "order_payments": {
+        "scanned": 103886,
+        "accepted": 1214,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 1214,
+        "deduplicated": 0
+      },
+      "order_reviews": {
+        "scanned": 99224,
+        "accepted": 1175,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 1175,
+        "deduplicated": 0
+      },
+      "products": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      },
+      "sellers": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      },
+      "category_translation": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      },
+      "geolocation": {
+        "scanned": 0,
+        "accepted": 0,
+        "inserted": 0,
+        "updated": 0,
+        "unchanged": 0,
+        "deduplicated": 0,
+        "unchanged_file_skipped": true
+      }
+    }
+  },
+  "stable_metrics": {
+    "tables": {
+      "customers": [
+        99441,
+        99441
+      ],
+      "orders": [
+        99441,
+        99441
+      ],
+      "order_items": [
+        112650,
+        112650
+      ],
+      "order_payments": [
+        103886,
+        103886
+      ],
+      "order_reviews": [
+        99224,
+        99224
+      ],
+      "products": [
+        32951,
+        32951
+      ],
+      "sellers": [
+        3095,
+        3095
+      ],
+      "category_translation": [
+        71,
+        71
+      ],
+      "geolocation": [
+        738332,
+        738332
+      ]
+    },
+    "totals": {
+      "price": "13591643.70",
+      "freight_value": "2251909.54",
+      "payment_value": "16008872.12"
+    },
+    "checkpoints": [
+      [
+        "olist_csv:category_translation",
+        "2018-10-17"
+      ],
+      [
+        "olist_csv:customers",
+        "2018-10-17"
+      ],
+      [
+        "olist_csv:geolocation",
+        "2018-10-17"
+      ],
+      [
+        "olist_csv:order_items",
+        "2018-10-17"
+      ],
+      [
+        "olist_csv:order_payments",
+        "2018-10-17"
+      ],
+      [
+        "olist_csv:order_reviews",
+        "2018-10-17"
+      ],
+      [
+        "olist_csv:orders",
+        "2018-10-17"
+      ],
+      [
+        "olist_csv:products",
+        "2018-10-17"
+      ],
+      [
+        "olist_csv:sellers",
+        "2018-10-17"
+      ]
+    ]
+  },
+  "result": "PASS"
+}

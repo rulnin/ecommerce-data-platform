@@ -1,0 +1,14 @@
+.git
+.venv
+.local
+.env
+.env.*
+!.env.example
+.aws
+.codex
+.agents
+data
+docs
+.pytest_cache
+.ruff_cache
+**/__pycache__

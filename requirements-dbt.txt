@@ -1,0 +1,5 @@
+# dbt warehouse runtime; isolated from container-only Airflow.
+-r requirements.txt
+dbt-core==1.12.6
+dbt-postgres==1.11.0
+psycopg2-binary==2.9.13

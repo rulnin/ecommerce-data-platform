@@ -1,0 +1,296 @@
+version: 2
+models:
+- name: stg_customers
+  description: One row per Olist customer_id (order-associated customer key, not a
+    deduplicated person).
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+  - name: customer_id
+    data_tests:
+    - unique
+    - not_null
+- name: stg_orders
+  description: One row per order_id; source timestamps are timezone-naive Brazilian
+    local time.
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+  - name: order_id
+    data_tests:
+    - unique
+    - not_null
+  - name: customer_id
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_customers')
+          field: customer_id
+  - name: order_purchase_timestamp
+    data_tests:
+    - not_null
+  - name: order_status
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - created
+          - approved
+          - invoiced
+          - processing
+          - shipped
+          - delivered
+          - unavailable
+          - canceled
+- name: stg_order_items
+  description: One row per order_id + order_item_id.
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+  - name: order_id
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_orders')
+          field: order_id
+  - name: order_item_id
+    data_tests:
+    - not_null
+  - name: product_id
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_products')
+          field: product_id
+  - name: seller_id
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_sellers')
+          field: seller_id
+  - name: price
+    data_tests:
+    - not_null
+  - name: freight_value
+    data_tests:
+    - not_null
+  data_tests:
+  - unique_grain:
+      arguments:
+        columns:
+        - order_id
+        - order_item_id
+- name: stg_order_payments
+  description: One row per order_id + payment_sequential; independent of item grain.
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+  - name: order_id
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_orders')
+          field: order_id
+  - name: payment_sequential
+    data_tests:
+    - not_null
+  - name: payment_value
+    data_tests:
+    - not_null
+  - name: payment_type
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - credit_card
+          - boleto
+          - voucher
+          - debit_card
+          - not_defined
+  data_tests:
+  - unique_grain:
+      arguments:
+        columns:
+        - order_id
+        - payment_sequential
+- name: stg_order_reviews
+  description: One row per raw content business key; repeated review_id values are
+    preserved.
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+  - name: order_id
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_orders')
+          field: order_id
+- name: stg_products
+  description: One row per product_id; optional source attributes remain null.
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+  - name: product_id
+    data_tests:
+    - unique
+    - not_null
+- name: stg_sellers
+  description: One row per seller_id.
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+  - name: seller_id
+    data_tests:
+    - unique
+    - not_null
+- name: stg_category_translation
+  description: One row per Portuguese category name; translations may be missing.
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+  - name: product_category_name
+    data_tests:
+    - unique
+    - not_null
+- name: stg_geolocation
+  description: One row per distinct raw content business key; ZIP prefixes are not
+    unique.
+  columns:
+  - name: source_key
+    description: Stable ingestion business key.
+    data_tests:
+    - unique
+    - not_null
+- name: stg_fx_rates
+  description: One ECB observation per USD/BRL pair + actual rate_date; BRL per USD.
+  columns:
+  - name: rate_date
+    data_tests:
+    - not_null
+  - name: rate
+    data_tests:
+    - not_null
+  - name: base_currency
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - USD
+  - name: quote_currency
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - BRL
+  - name: provider
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - ECB
+  data_tests:
+  - unique_grain:
+      arguments:
+        columns:
+        - base_currency
+        - quote_currency
+        - rate_date
+- name: stg_fx_requests
+  description: One row per requested_date mapping to actual observed date.
+  columns:
+  - name: requested_date
+    data_tests:
+    - unique
+    - not_null
+  - name: rate_date
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_fx_rates')
+          field: rate_date
+- name: stg_inventory
+  description: One row per synthetic product_id, including deletion tombstones; current
+    state only.
+  columns:
+  - name: product_id
+    data_tests:
+    - unique
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_products')
+          field: product_id
+  - name: is_synthetic
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - true
+          quote: false
+  - name: is_deleted
+    data_tests:
+    - not_null
+  - name: quantity
+    data_tests:
+    - not_null
+- name: stg_stock_movements
+  description: One row per synthetic movement_id, including deletion tombstones; not
+    a complete real stock ledger.
+  columns:
+  - name: movement_id
+    data_tests:
+    - unique
+    - not_null
+  - name: product_id
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_products')
+          field: product_id
+  - name: is_synthetic
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - true
+          quote: false
+  - name: is_deleted
+    data_tests:
+    - not_null

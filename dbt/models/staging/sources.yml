@@ -1,0 +1,33 @@
+version: 2
+sources:
+- name: raw
+  schema: raw
+  description: Persisted Phase 2/3 source contracts; Olist snapshots, ECB observations
+    and explicitly synthetic current stock.
+  tables:
+  - name: customers
+    description: Raw customers; see docs/data-contracts.md and source runbooks.
+  - name: orders
+    description: Raw orders; see docs/data-contracts.md and source runbooks.
+  - name: order_items
+    description: Raw order_items; see docs/data-contracts.md and source runbooks.
+  - name: order_payments
+    description: Raw order_payments; see docs/data-contracts.md and source runbooks.
+  - name: order_reviews
+    description: Raw order_reviews; see docs/data-contracts.md and source runbooks.
+  - name: products
+    description: Raw products; see docs/data-contracts.md and source runbooks.
+  - name: sellers
+    description: Raw sellers; see docs/data-contracts.md and source runbooks.
+  - name: category_translation
+    description: Raw category_translation; see docs/data-contracts.md and source runbooks.
+  - name: geolocation
+    description: Raw geolocation; see docs/data-contracts.md and source runbooks.
+  - name: fx_rates
+    description: Raw fx_rates; see docs/data-contracts.md and source runbooks.
+  - name: fx_requests
+    description: Raw fx_requests; see docs/data-contracts.md and source runbooks.
+  - name: inventory
+    description: Raw inventory; see docs/data-contracts.md and source runbooks.
+  - name: stock_movements
+    description: Raw stock_movements; see docs/data-contracts.md and source runbooks.

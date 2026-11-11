@@ -22,5 +22,29 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-CU27-GDR1-ubuntu-22.04
+    profiles: [sqlserver]
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-}
+      MSSQL_MEMORY_LIMIT_MB: "2048"
+    ports:
+      - "127.0.0.1:${SQLSERVER_PORT:-1433}:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    mem_limit: 3g
+    healthcheck:
+      test: ["CMD-SHELL", "SQLCMDPASSWORD=$$MSSQL_SA_PASSWORD /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -C -Q 'SELECT 1' -b -o /dev/null"]
+      interval: 10s
+      timeout: 10s
+      retries: 18
+      start_period: 30s
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 volumes:
   postgres_data:
+  sqlserver_data:

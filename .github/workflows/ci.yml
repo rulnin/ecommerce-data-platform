@@ -1,0 +1,71 @@
+name: Python checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Create environment and install pinned tools
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install pip==26.3
+          .venv/bin/python -m pip install -r requirements.txt
+          .venv/bin/python -m pip check
+      - name: Lint, format, compile and unit tests
+        run: bash scripts/check.sh unit
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci-ephemeral-only
+          POSTGRES_DB: ecommerce_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci -d ecommerce_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_PORT: '5432'
+      POSTGRES_USER: ci
+      POSTGRES_PASSWORD: ci-ephemeral-only
+      POSTGRES_DB: ecommerce_ci
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Create environment and install pinned tools
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install pip==26.3
+          .venv/bin/python -m pip install -r requirements.txt
+          .venv/bin/python -m pip check
+      - name: Lint, format, compile and disposable DB tests
+        run: bash scripts/check.sh integration

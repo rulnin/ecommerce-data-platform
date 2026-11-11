@@ -1,8 +1,11 @@
-.PHONY: profile verify
+.PHONY: profile verify verify-integration
+PYTHON ?= .venv/bin/python
 
 profile:
-	python3 scripts/profile_dataset.py --input data/raw --output docs/source-profile.json
+	$(PYTHON) scripts/profile_dataset.py --input data/raw --output docs/source-profile.json
 
 verify:
-	python3 -m compileall -q scripts
-	python3 -m unittest discover -s tests/unit -v
+	PYTHON="$(PYTHON)" bash scripts/check.sh unit
+
+verify-integration:
+	PYTHON="$(PYTHON)" bash scripts/check.sh integration

@@ -2,8 +2,9 @@
 
 These contracts describe the locally observed historical snapshot, not a live feed.
 Raw values are preserved as strings during profiling; empty fields are counted
-separately. SQL types, timestamp timezone semantics, precision, and rejection rules
-must be finalized before ingestion. The machine-readable evidence is
+separately. Phase 2 retains these strings in JSONB and documents rejection/key rules
+in csv-ingestion.md. Typed staging, timezone interpretation and precision rules
+remain later-phase decisions. The machine-readable evidence is
 `source-profile.json`, including SHA-256 per file and complete column/null counts.
 
 | Source | Observed rows | Intended grain / candidate key | Proposed target |
@@ -12,17 +13,20 @@ must be finalized before ingestion. The machine-readable evidence is
 | orders | 99,441 | order_id | raw.orders |
 | order_items | 112,650 | order_id + order_item_id | raw.order_items |
 | order_payments | 103,886 | order_id + payment_sequential | raw.order_payments |
-| order_reviews | 99,224 | Unresolved; review_id alone repeats | raw.order_reviews |
+| order_reviews | 99,224 | Content-hash versions; review_id alone repeats | raw.order_reviews |
 | products | 32,951 | product_id | raw.products |
 | sellers | 3,095 | seller_id | raw.sellers |
 | category translation | 71 | product_category_name | raw.category_translation |
-| geolocation | 1,000,163 | No unique key declared; postcode prefix is not unique | raw.geolocation |
+| geolocation | 1,000,163 | Content hash; exact duplicates collapse in raw | raw.geolocation |
 
-Table names above are proposals; no target tables exist yet. Initial mapping is
-source column to identically named raw column, with load metadata added in Phase 2.
+Phase 2 implements these target tables. Source columns map to identically named
+string fields within each raw table's `data` JSONB payload. Provenance, hashes,
+keys and run metadata are separate columns. See csv-ingestion.md for final raw
+grain/preservation rules and source-to-target mapping; typed staging is later work.
 Do not use row order as a permanent business key. Do not impose review_id uniqueness:
 814 rows repeat that candidate key. Investigate review versions and exact duplicates
-before choosing a preservation/deduplication strategy.
+and Phase 2 preserves distinct content-addressed versions rather than choosing
+an arbitrary winner. Source row count and unique loaded count are reconciled.
 
 Exact-row profiling now confirms zero identical review rows and 261,831 duplicate
 geolocation rows beyond the first occurrence. See source-profiling.md and the
@@ -41,5 +45,8 @@ combining totals. Item price, freight, and payment value remain separate measure
 revenue rules and reconciliation tolerances are not yet defined. Geolocation requires
 an explicit postcode aggregation rule before dimension joins to avoid row multiplication.
 
-FX and synthetic inventory contracts belong to Phase 3 and remain undefined. No
-existing file is represented as synthetic inventory or genuine incremental CDC.
+Phase 3 contracts are now defined in fx-contract.md and sqlserver-source.md.
+raw.fx_rates stores dated ECB USD/BRL observations; raw.inventory and
+raw.stock_movements contain explicitly synthetic, sequence-versioned stock rows
+linked to valid product IDs. No historical Olist CSV is represented as genuine
+live CDC or actual inventory.

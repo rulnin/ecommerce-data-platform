@@ -4,8 +4,14 @@ A local-first data engineering portfolio integrating historical Olist e-commerce
 orders, public exchange rates, and synthetic SQL Server inventory into PostgreSQL.
 The business goal is validated order, customer and daily sales analytics without
 multiplying item and payment totals. Phase 1 provides reproducible source acquisition,
-profiling, contracts and a verified PostgreSQL service. Ingestion, Airflow orchestration,
-dbt models and reporting belong to subsequent phases and are not implemented yet.
+profiling, contracts and a verified PostgreSQL service. Phase 2 adds transactional
+CSV ingestion, simulated date batches, checkpoints and tested recovery.
+Phase 3 adds dated ECB FX rates and a synthetic SQL Server stock source with
+transactional sequence-based extraction. Phase 4 orchestrates the loaders with
+Airflow, retries, operational summaries and recovery checks. Phase 5 adds dbt
+staging views, customer/product/seller/date dimensions and separate item/payment
+facts with daily sales metrics. Phase 6 validates keys, mappings, counts and financial
+totals before transactional publication to consumer tables. Reporting remains later work.
 
 ```text
 Olist CSVs -> data/raw -> source profiling + contracts
@@ -13,7 +19,7 @@ Olist CSVs -> data/raw -> source profiling + contracts
                               v (Phase 2 onward)
 API + synthetic SQL Server -> PostgreSQL raw -> staging -> marts
                                    ^
-                           Airflow + dbt (later phases)
+                           Airflow (implemented) + dbt (implemented)
 ```
 
 ## Setup
@@ -46,8 +52,8 @@ python -m pytest -q
 The setup script prohibits interpreter downloads, seeds pip and preserves an
 existing venv. Requirements files provide direct pins; transitive dependencies
 are not fully locked. Use pip inside the activated venv, rather than uv sync.
-The optional `requirements-compatibility.txt` reproduces the tested dbt pair;
-install it only when checking compatibility or starting the dbt phase.
+Install `requirements-dbt.txt` for the dimensional warehouse;
+`requirements-compatibility.txt` retains the same dbt pins for compatibility probes.
 See [Python compatibility evidence](docs/python-compatibility.md) for limitations.
 Exit the shell environment with `deactivate`.
 
@@ -81,7 +87,7 @@ docker compose exec -T postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB
 Verified image: `postgres:17.11-bookworm`; named volume:
 `ecommerce-data-platform_postgres_data`; port bound to `127.0.0.1` only. The image
 initializes credentials only on an empty volume: changing `.env` does not rotate
-an existing database password. No analytical tables are loaded in Phase 1.
+an existing database password. Phase 2 loads raw tables; Phase 5 builds analytical marts using dbt.
 
 ```bash
 docker compose stop postgres  # stop, retaining container and data
@@ -102,6 +108,16 @@ sandbox, which maps host groups and masks Git metadata. The normal WSL terminal
 works without sudo; do not reinstall Docker or change socket permissions.
 
 ## Dataset and source profiling
+
+Phase 2 provides configuration, bounded connection retries and transactional CSV
+upserts. See [loading, recovery and evidence](docs/csv-ingestion.md). For a full load:
+`python -m src.ingestion.csv_pipeline --batch-id full-olist-v2`.
+To inspect a file without loading it:
+`python -m src.ingestion.csv_ingestion data/raw/olist_orders_dataset.csv --batch-size 1000`.
+The inspection command reports counts only. To simulate one day's arrivals:
+`python -m src.ingestion.csv_pipeline --batch-id day-2017-11-24 --start 2017-11-24 --end 2017-11-25`.
+Configuration keys and defaults are listed in `.env.example`; process environment
+values override `.env`. Connection retries do not replay failed transactions.
 
 Source: [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce),
 Kaggle dataset version 2 (publisher metadata: updated 2021-10-01). Publisher lists
@@ -125,6 +141,60 @@ download the ZIP yourself from the publisher page and use:
 No credentials are logged or stored by this script. This URL is not an immutable
 snapshot: compare hashes with [the verified manifest](docs/dataset-manifest.json).
 
+## Phase 3 external sources
+
+Frankfurter v2 supplies explicitly dated ECB USD/BRL reference rates. Weekend
+requests retain the earlier returned observation date. The client caches by
+requested date, upserts by actual rate date and supports explicit refresh:
+
+```bash
+source .venv/bin/activate
+python -m src.ingestion.api_ingestion --date 2017-11-25 --batch-id fx-2017-11-25
+```
+
+See [FX schema, coverage probes and conversion direction](docs/fx-contract.md).
+SQL Server is an optional Compose profile with a named volume and localhost-only
+port. Follow [synthetic source setup and recovery](docs/sqlserver-source.md) to
+generate local credentials, install the project-local WSL ODBC runtime and seed
+100 valid product IDs. Inventory is simulated and must not be represented as Olist
+stock. The pinned pyodbc dependency is separate from system/ODBC libraries.
+
+```bash
+docker compose --profile sqlserver up -d --wait --wait-timeout 240 sqlserver
+python -m scripts.seed_synthetic_inventory
+python -m src.ingestion.sqlserver_ingestion --batch-id stock-initial
+python -m scripts.verify_phase3
+docker compose --profile sqlserver stop sqlserver
+```
+
+Run the setup steps in the linked guide before those commands. The verification
+script deliberately changes synthetic rows to prove same-timestamp updates,
+tombstones and rollback/recovery; it preserves the initial full-load evidence.
+metadata.external_runs and metadata.external_checkpoints expose auditable external
+attempts separately from the Phase 2 CSV run records. Data and checkpoints commit
+together. [Phase 3 evidence](docs/phase3-evidence.json) records independent loads of
+all three sources. Stop SQL Server when idle to reduce local memory use.
+
+## Phase 4 orchestration
+
+```bash
+bash scripts/airflow.sh setup
+bash scripts/airflow.sh status
+```
+
+Open http://localhost:8080 with username admin and the generated
+AIRFLOW_ADMIN_PASSWORD from ignored .env. The DAG starts paused. Read the
+[Airflow runbook](docs/airflow.md) before triggering, backfilling or simulating a
+failure. It uses LocalExecutor and isolated constrained container dependencies;
+the host venv is unchanged. The daily operational summary keeps items and payments
+at separate grains. This is not the Phase 5 dimensional warehouse.
+
+[Runtime proof](docs/airflow-runtime.json), [DAG/recovery evidence](docs/phase4-evidence.json)
+and [UI captures](docs/screenshots/phase4-recovered.png) record the tested deployment.
+`bash scripts/airflow.sh stop` stops Airflow and SQL Server while preserving data.
+
+## Source profile and verification
+
 The profile includes SHA-256, columns, counts, empty fields, candidate keys, exact
 row duplicates and distinct nonempty relationship violations. It fails on missing
 files or malformed CSV structure; data findings are reported diagnostically and do
@@ -138,5 +208,63 @@ separate. See [source contracts](docs/data-contracts.md), [profiling notes](docs
 [environment evidence](docs/environment.md), and [task tracker](ECOMMERCE_DATA_PLATFORM_TASKS.md).
 
 `make profile` and `make verify` are optional shortcuts if make is installed;
-the Python commands above are the verified path. Phase 1 evidence is in the tracker;
-no CI success, pipeline load, warehouse metrics or performance benchmarks are claimed.
+the Python commands above are the verified path. Use `RUN_DB_TESTS=1 python -m pytest -q`
+for disposable-database tests and `python -m scripts.verify_phase2` for real-data
+rerun/recovery verification. Phase 1–6 evidence is in the tracker.
+CI and performance benchmarking remain later-phase work.
+
+## dbt warehouse (Phase 5)
+
+```bash
+source .venv/bin/activate
+python -m pip install -r requirements-dbt.txt
+python scripts/dbt.py debug
+python scripts/dbt.py build
+python scripts/dbt.py docs generate
+python scripts/dbt.py docs serve --host 127.0.0.1 --port 8081
+# Repeatable live + disposable-database validation:
+python -m scripts.verify_phase5
+```
+
+The wrapper loads local `.env`; profiles contain environment references only.
+Twenty models cover thirteen raw-source staging views, four dimensions and three
+facts. Items and payments retain separate grains and aggregate independently.
+Only the item fact is incremental; changed parent attributes are detected too.
+USD measures remain null for days without a stored ECB observation within seven
+days. Airflow still runs its Phase 4 operational summary; dbt runs explicitly.
+See [warehouse grains, financial rules, targets and rebuild runbook](docs/dbt-warehouse.md)
+and [executed Phase 5 evidence](docs/phase5-evidence.json). Generated dbt docs stay
+local under ignored `dbt/target/`.
+
+## Quality and publication (Phase 6)
+
+```bash
+source .venv/bin/activate
+python -m src.quality.publication
+# Exercises bad-input rejection and recovery in a disposable database:
+python -m scripts.verify_phase6
+```
+
+Read validated consumer tables from `published`, rather than developer `marts`
+or `candidate_marts`. Publication requires every dbt test and model to succeed;
+failures leave the previous publication intact and return a nonzero exit status.
+`docs/quality-report.json` records per-check expected/actual violations and failing
+keys; `metadata.quality_runs` retains attempts. `revenue_brl` is delivered-order
+item value excluding freight, refunds and fees, separate from payment amounts.
+See [quality rules, count baseline and recovery protocol](docs/data-quality.md)
+and [Phase 6 execution evidence](docs/phase6-evidence.json). Airflow publication
+integration remains explicit future work; the Phase 4 DAG is unchanged.
+
+## Automated checks (Phase 7)
+
+```bash
+bash scripts/check.sh unit
+docker compose up -d --wait postgres
+bash scripts/check.sh integration
+```
+
+These are the same check commands used in GitHub Actions. The unit job needs no
+source data or external credentials; integration tests use disposable PostgreSQL
+databases. See [test scope, setup and coding standards](docs/testing.md). Hosted
+CI verification status is recorded in [Phase 7 evidence](docs/phase7-evidence.json)
+and the task tracker; local validation alone does not establish hosted success.

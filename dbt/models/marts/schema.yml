@@ -1,0 +1,113 @@
+version: 2
+models:
+- name: dim_customer
+  description: One row per customer_id, Type 1 current attributes. customer_unique_id
+    identifies repeat people and is not unique here.
+  columns:
+  - name: customer_id
+    description: Declared unique model grain.
+    data_tests:
+    - unique
+    - not_null
+- name: dim_product
+  description: One row per product_id, Type 1; left joined optional category translation.
+  columns:
+  - name: product_id
+    description: Declared unique model grain.
+    data_tests:
+    - unique
+    - not_null
+- name: dim_seller
+  description: One row per seller_id, Type 1 current attributes.
+  columns:
+  - name: seller_id
+    description: Declared unique model grain.
+    data_tests:
+    - unique
+    - not_null
+- name: dim_date
+  description: One row per calendar day spanning min/max order purchase date, inclusive.
+  columns:
+  - name: date_day
+    description: Declared unique model grain.
+    data_tests:
+    - unique
+    - not_null
+- name: fct_order_items
+  description: One row per order_id + order_item_id. All statuses; price excludes
+    freight. Incremental comparison includes parent-order changes.
+  columns:
+  - name: order_item_key
+    description: Declared unique model grain.
+    data_tests:
+    - unique
+    - not_null
+  - name: customer_id
+    description: Business key referencing dim_customer.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_customer')
+          field: customer_id
+  - name: purchase_date
+    description: Business key referencing dim_date.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_date')
+          field: date_day
+  - name: product_id
+    description: Business key referencing dim_product.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_product')
+          field: product_id
+  - name: seller_id
+    description: Business key referencing dim_seller.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_seller')
+          field: seller_id
+- name: fct_payments
+  description: One row per order_id + payment_sequential. Payment value is a tender
+    amount, not recognized revenue.
+  columns:
+  - name: payment_key
+    description: Declared unique model grain.
+    data_tests:
+    - unique
+    - not_null
+  - name: customer_id
+    description: Business key referencing dim_customer.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_customer')
+          field: customer_id
+  - name: purchase_date
+    description: Business key referencing dim_date.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_date')
+          field: date_day
+- name: fct_daily_sales
+  description: One row per calendar purchase day. Orders/items/payments aggregated
+    separately. USD values are null when dated ECB coverage is unavailable.
+  columns:
+  - name: purchase_date
+    description: Declared unique model grain.
+    data_tests:
+    - unique
+    - not_null
+  - name: revenue_brl
+    description: Delivered-order item prices by purchase day, excluding freight, refunds
+      and fees. Portfolio sales proxy, not accounting recognized revenue.

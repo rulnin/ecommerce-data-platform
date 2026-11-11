@@ -1,0 +1,2 @@
+# Optional real-UI screenshot tool; install into an isolated temporary target.
+websocket-client==1.9.0

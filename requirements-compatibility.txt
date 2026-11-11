@@ -1,4 +1,4 @@
-# Optional verification set, not a dbt project or warehouse deployment.
+# Optional compatibility probe set; warehouse runtime is requirements-dbt.txt.
 -r requirements.txt
 dbt-core==1.12.6
 dbt-postgres==1.11.0

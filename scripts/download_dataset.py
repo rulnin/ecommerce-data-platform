@@ -13,10 +13,14 @@ from urllib3.util.retry import Retry
 
 URL = "https://www.kaggle.com/api/v1/datasets/download/olistbr/brazilian-ecommerce"
 NAMES = (
-    "olist_customers_dataset.csv", "olist_orders_dataset.csv",
-    "olist_order_items_dataset.csv", "olist_order_payments_dataset.csv",
-    "olist_order_reviews_dataset.csv", "olist_products_dataset.csv",
-    "olist_sellers_dataset.csv", "olist_geolocation_dataset.csv",
+    "olist_customers_dataset.csv",
+    "olist_orders_dataset.csv",
+    "olist_order_items_dataset.csv",
+    "olist_order_payments_dataset.csv",
+    "olist_order_reviews_dataset.csv",
+    "olist_products_dataset.csv",
+    "olist_sellers_dataset.csv",
+    "olist_geolocation_dataset.csv",
     "product_category_name_translation.csv",
 )
 
@@ -50,10 +54,17 @@ def extract(archive, destination):
 
 def download(path):
     with requests.Session() as session:
-        session.mount("https://", HTTPAdapter(max_retries=Retry(
-            total=3, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504],
-            allowed_methods=["GET"],
-        )))
+        session.mount(
+            "https://",
+            HTTPAdapter(
+                max_retries=Retry(
+                    total=3,
+                    backoff_factor=1,
+                    status_forcelist=[429, 500, 502, 503, 504],
+                    allowed_methods=["GET"],
+                )
+            ),
+        )
         with session.get(URL, stream=True, timeout=(10, 60)) as response:
             response.raise_for_status()
             size = 0
@@ -79,9 +90,17 @@ def main():
         with archive.open("rb") as stream:
             archive_hash = hashlib.file_digest(stream, "sha256").hexdigest()
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(json.dumps({
-        "source": URL, "archive_sha256": archive_hash, "files_sha256": hashes,
-    }, indent=2) + "\n")
+    args.report.write_text(
+        json.dumps(
+            {
+                "source": URL,
+                "archive_sha256": archive_hash,
+                "files_sha256": hashes,
+            },
+            indent=2,
+        )
+        + "\n"
+    )
     print(f"Verified {len(hashes)} CSVs; existing identical files preserved")
 
 
