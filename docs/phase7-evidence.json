@@ -1,6 +1,6 @@
 {
-  "status": "LOCAL_PASS_HOSTED_PENDING",
-  "verified_at": "2026-11-11T10:39:18.083152+00:00",
+  "status": "PASS",
+  "verified_at": "2026-11-11T10:47:12.139936+00:00",
   "python": "3.14.4",
   "unit_tests_passed": 46,
   "integration_tests_passed": 8,
@@ -16,6 +16,38 @@
   },
   "github_repository": "https://github.com/rulnin/ecommerce-data-platform",
   "hosted_ci": {
-    "status": "PENDING"
-  }
+    "status": "SUCCESS",
+    "push_exit_status": 0,
+    "run_id": 43006266346,
+    "url": "https://github.com/rulnin/ecommerce-data-platform/actions/runs/43006266346",
+    "head_sha": "67271c2b3f3a76d46ecd60ea6cd6bef8030e128b",
+    "event": "push",
+    "created_at": "2026-11-11T10:45:25Z",
+    "updated_at": "2026-11-11T10:46:16Z",
+    "jobs": [
+      {
+        "name": "unit",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/rulnin/ecommerce-data-platform/actions/runs/43006266346/job/130474391847",
+        "started_at": "2026-11-11T10:45:27Z",
+        "completed_at": "2026-11-11T10:45:58Z"
+      },
+      {
+        "name": "integration",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/rulnin/ecommerce-data-platform/actions/runs/43006266346/job/130474392683",
+        "started_at": "2026-11-11T10:45:27Z",
+        "completed_at": "2026-11-11T10:46:16Z"
+      }
+    ]
+  },
+  "test_commit": "67271c2b3f3a76d46ecd60ea6cd6bef8030e128b",
+  "test_branch": "codex/phase7-ci-20261111",
+  "isolated_checkout": "/tmp/ecommerce-phase7-test-3b1369s6/repo",
+  "local_commit_checks": "PASS",
+  "intentional_failure_exit_status": 1,
+  "failure_probe_removed": true,
+  "secret_scan": "PASS"
 }

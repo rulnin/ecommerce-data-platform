@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "mermaid_version": "11.4.1",
+  "diagrams": [
+    {
+      "source": "README.md",
+      "diagram": 1,
+      "type": "flowchart-v2",
+      "sha256": "93b0f24e073fe7514101185d6001f554e239731d2823990b0ced11c409c12db1",
+      "svg": "docs/diagrams/readme-1.svg",
+      "status": "PASS"
+    },
+    {
+      "source": "docs/architecture.md",
+      "diagram": 1,
+      "type": "flowchart-v2",
+      "sha256": "cd9653cccd3a9ef66f60a6e8abd97d09fb9003cf4b8ffa44478694fac0c71e45",
+      "svg": "docs/diagrams/architecture-1.svg",
+      "status": "PASS"
+    },
+    {
+      "source": "docs/architecture.md",
+      "diagram": 2,
+      "type": "flowchart-v2",
+      "sha256": "59ff21e8f1f427141fa789d0982bdfe4779955e844960b30e52338801db8df8c",
+      "svg": "docs/diagrams/architecture-2.svg",
+      "status": "PASS"
+    },
+    {
+      "source": "docs/data-model.md",
+      "diagram": 1,
+      "type": "er",
+      "sha256": "74cef861e6ec1ab8d28afe9ac57a533dfb389055f0b4950b7dedd8a2673d977c",
+      "svg": "docs/diagrams/data-model-1.svg",
+      "status": "PASS"
+    }
+  ],
+  "screenshot": "docs/screenshots/phase9-analytics.png"
+}

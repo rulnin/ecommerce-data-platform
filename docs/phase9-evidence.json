@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "verified_at": "2026-11-11T11:26:48.143859+00:00",
+  "publication_run_id": "1b57faee-629e-424e-8d8a-b0fb02ed5d92",
+  "read_only_repeatable_read": true,
+  "query_count": 8,
+  "query_sha256": {
+    "01_overview": "2e18ba41d7dca313d5e1239ad29bfc006610cd8896af479a427a4345fa106094",
+    "02_monthly_sales": "66143d35550a5a5978667a798dc9f8b94f5fce3881ecf261512f7e9cb9c38ddb",
+    "03_top_categories": "b83364e5ffdc2ad56e74d519f4c5f43daa5ddf8a93d03bf7f2a2d8cf4ca3c431",
+    "04_buyer_states": "b1f26e6d47e2706506fd4c499756821c86c4c8c3bf3dd22726b4f6c166be9086",
+    "05_payment_mix": "028e94e6dcef8a97d9267130cca61792f56dcc7cf234574e4969b215c6a41abe",
+    "06_repeat_buyers": "51436cb7d6c9a841b290abce87a287296f7e9cc2cfc3a68f385f13efdac19f37",
+    "07_top_sellers": "007fa52492b9cb9d2d794812d3132d1e8adbe74387b6e579039c9571ac845557",
+    "08_fx_coverage": "3dbd6cf7f6597863ee0eac8b5ba0fb65670afcc96cf59f077f5b5698ad044643"
+  },
+  "result_row_counts": {
+    "01_overview": 1,
+    "02_monthly_sales": 26,
+    "03_top_categories": 10,
+    "04_buyer_states": 27,
+    "05_payment_mix": 5,
+    "06_repeat_buyers": 1,
+    "07_top_sellers": 10,
+    "08_fx_coverage": 1
+  },
+  "validation": {
+    "raw_overview_totals": "PASS",
+    "monthly_and_state_revenue": "PASS",
+    "payment_mix_total": "PASS",
+    "repeat_order_counts": "PASS",
+    "fx_coverage_partition": "PASS"
+  },
+  "artifacts": [
+    "docs/analytics-results.md",
+    "docs/analytics-results.json",
+    "docs/architecture.md",
+    "docs/data-model.md",
+    "docs/trade-offs.md",
+    "docs/data-rights.md",
+    "docs/walkthrough.md",
+    "docs/analytics.md",
+    "docs/screenshots/phase9-analytics.png",
+    "docs/phase9-render-evidence.json"
+  ],
+  "local_document_links_checked": 58,
+  "bash_blocks_syntax_checked": 9,
+  "walkthrough_spoken_words": 461,
+  "estimated_minutes_at_130_wpm": 3.55,
+  "walkthrough_timing_is_estimated": true,
+  "erd_relations_checked": 7,
+  "mermaid_blocks_rendered": 4,
+  "mermaid_hashes_match_current_docs": true,
+  "screenshot_visually_checked": true,
+  "secret_scan": "PASS",
+  "pytest_passed": 54,
+  "ruff_and_compileall": "PASS",
+  "local_browser_removed": true
+}

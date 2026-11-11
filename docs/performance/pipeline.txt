@@ -1,0 +1,9 @@
+2026-11-11 17:52:17,466 INFO src.ingestion.csv_pipeline csv_run_success run_id=8867a423-0819-4aa2-b385-fb2a6e58975c
+2026-11-11 17:53:41,976 INFO src.ingestion.csv_pipeline csv_run_success run_id=07a13240-fe8f-4bb2-9c9f-22ba40e6387d
+2026-11-11 17:54:58,718 INFO src.ingestion.csv_pipeline csv_run_success run_id=093f80e7-df41-40fc-adf2-66fac5d9db31
+2026-11-11 17:56:12,727 INFO src.ingestion.csv_pipeline csv_run_success run_id=efa5185a-0eee-41d6-81be-3cec579f2a4a
+2026-11-11 17:56:18,225 INFO src.ingestion.csv_pipeline csv_run_success run_id=0858c281-a195-412e-b4d5-6f32c3d679a9
+2026-11-11 17:56:23,688 INFO src.ingestion.csv_pipeline csv_run_success run_id=4cebded1-12b7-42cc-8d14-4a292867685c
+2026-11-11 17:56:29,123 INFO src.ingestion.csv_pipeline csv_run_success run_id=6cbddc3f-2e31-4c11-a8ea-fb8ac2506c06
+2026-11-11 17:56:32,506 ERROR src.ingestion.csv_pipeline csv_run_failed run_id=a6003419-f0a1-4210-87b2-ce2ea62e3775 code=simulated_failure
+2026-11-11 17:56:38,059 INFO src.ingestion.csv_pipeline csv_run_success run_id=b71275ef-60fa-42ff-ab10-fc68adb1e782

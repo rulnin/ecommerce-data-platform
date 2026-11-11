@@ -88,5 +88,7 @@ setup. See official [checkout](https://github.com/actions/checkout) and
 Local workflow syntax is validated with the checksum-verified official
 [actionlint](https://github.com/rhysd/actionlint) 1.7.12 executable. Local script
 success and intentional failure propagation are recorded separately from a
-hosted GitHub Actions result. P7.6 remains unchecked until an actual successful
-hosted run URL and commit SHA are captured; local emulation is not that evidence.
+hosted GitHub Actions result. Hosted verification passed for commit `67271c2b3f3a76d46ecd60ea6cd6bef8030e128b`:
+[successful GitHub Actions run](https://github.com/rulnin/ecommerce-data-platform/actions/runs/43006266346). Both unit and integration jobs
+completed successfully. The complete result and job links are captured in
+[Phase 7 evidence](phase7-evidence.json); P7.6 is now verified.

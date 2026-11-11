@@ -4,7 +4,7 @@
 >
 > **Level:** Intermediate | **Budget:** Rp0 | **Primary OS:** Windows 11 + WSL2 Ubuntu 24.04 LTS | **Working directory:** `~/projects/data-engineering/ecommerce-data-platform`
 >
-> **Last updated:** 2026-11-11 | **Revision:** v2 (explicit Python venv + WSL2 Docker setup) | **Status:** Phases 1–6 complete; Phase 7 verification in progress
+> **Last updated:** 2026-11-11 | **Revision:** v2 (explicit Python venv + WSL2 Docker setup) | **Status:** Phases 1–9 complete; Phase 10 not started
 
 ## 0. Project overview
 
@@ -137,12 +137,12 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 | 4 | Airflow orchestration | ✅ Complete | Scheduled and recoverable DAG |
 | 5 | dbt data warehouse | ✅ Complete | Tested dimensional models |
 | 6 | Reconciliation + data quality | ✅ Complete | Quality report and failure tests |
-| 7 | Automated tests + CI | 🔄 In progress | Local checks verified; hosted run pending |
-| 8 | Performance + observability | ⬜ Not started | Measurements and runbooks |
-| 9 | Analytics + recruiter documentation | ⬜ Not started | Demo, diagrams, English README |
+| 7 | Automated tests + CI | ✅ Complete | CI checks and reproducible testing |
+| 8 | Performance + observability | ✅ Complete | Measurements and runbooks |
+| 9 | Analytics + recruiter documentation | ✅ Complete | Demo, diagrams, English README |
 | 10 | Final hardening + interview rehearsal | ⬜ Not started | Release-ready portfolio |
 
-**Progress:** 6 / 10 phases complete. Update manually after verifying each phase.
+**Progress:** 9 / 10 phases complete. Update manually after verifying each phase.
 
 ### Phase 1 — Environment, repository, and dataset (Week 1)
 
@@ -235,29 +235,29 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 - [x] P7.3 Add Ruff formatter/linter and a documented code style.
 - [x] P7.4 Create `.github/workflows/ci.yml` running achievable lint/unit tests without cloud credentials.
 - [x] P7.5 Provide reproducible local commands matching CI commands.
-- [ ] P7.6 Verify CI success on a test commit and capture result in documentation.
+- [x] P7.6 Verify CI success on a test commit and capture result in documentation.
 
 **Exit criteria:** CI runs reliably on public repository; failing a test fails the workflow.
 
 ### Phase 8 — Performance, observability, and reliability (Week 8)
 
-- [ ] P8.1 Measure baseline load times and row counts with fixed dataset and environment.
-- [ ] P8.2 Compare full load vs incremental load using honest, repeatable measurements.
-- [ ] P8.3 Analyze slow SQL with `EXPLAIN (ANALYZE, BUFFERS)` as appropriate.
-- [ ] P8.4 Add or adjust indexes with before/after benchmark and trade-off notes.
-- [ ] P8.5 Capture pipeline logs, ingestion audit, error counts, and duration per run.
-- [ ] P8.6 Document failure recovery, data replay, backup/restore, and resource requirements.
+- [x] P8.1 Measure baseline load times and row counts with fixed dataset and environment.
+- [x] P8.2 Compare full load vs incremental load using honest, repeatable measurements.
+- [x] P8.3 Analyze slow SQL with `EXPLAIN (ANALYZE, BUFFERS)` as appropriate.
+- [x] P8.4 Add or adjust indexes with before/after benchmark and trade-off notes.
+- [x] P8.5 Capture pipeline logs, ingestion audit, error counts, and duration per run.
+- [x] P8.6 Document failure recovery, data replay, backup/restore, and resource requirements.
 
 **Exit criteria:** Measured metrics (not invented values) and runbooks exist; rerun and recovery are reliable.
 
 ### Phase 9 — Analytics & portfolio storytelling (Week 9)
 
-- [ ] P9.1 Write 5–10 business SQL questions and queries based on validated marts.
-- [ ] P9.2 Create a simple analytics dashboard (Metabase optional) or screenshot-worthy SQL result set.
-- [ ] P9.3 Create architecture and ERD diagrams in `docs/`.
-- [ ] P9.4 Write English README: problem, stack, architecture, dataset rights, setup, commands, screenshots, tests.
-- [ ] P9.5 Explain trade-offs: PostgreSQL vs SQL Server, batch vs streaming, full vs incremental, local vs AWS.
-- [ ] P9.6 Prepare a 3–5 minute English walkthrough and a short CV/LinkedIn project description.
+- [x] P9.1 Write 5–10 business SQL questions and queries based on validated marts.
+- [x] P9.2 Create a simple analytics dashboard (Metabase optional) or screenshot-worthy SQL result set.
+- [x] P9.3 Create architecture and ERD diagrams in `docs/`.
+- [x] P9.4 Write English README: problem, stack, architecture, dataset rights, setup, commands, screenshots, tests.
+- [x] P9.5 Explain trade-offs: PostgreSQL vs SQL Server, batch vs streaming, full vs incremental, local vs AWS.
+- [x] P9.6 Prepare a 3–5 minute English walkthrough and a short CV/LinkedIn project description.
 
 **Exit criteria:** Recruiter can understand the problem, see real evidence, and reproduce the work.
 
@@ -269,7 +269,7 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 - [ ] P10.4 Review SQL performance, idempotence, code quality, and cleanup/stop commands.
 - [ ] P10.5 Create a versioned release/tag with a concise changelog.
 - [ ] P10.6 Rehearse interview Q&A: duplicates, checkpoints, failure recovery, source-target reconciliation, scaling.
-- [ ] P10.7 Pin repository to GitHub profile and include verified outcomes in CV.
+- [ ] P10.7 Pin repository to GitHub profile (CV update waived by user on 2026-11-11).
 
 **Exit criteria:** Clean setup succeeds, project is demonstrable, and all stated features have evidence.
 
@@ -728,6 +728,95 @@ deactivate
 - Added seven unit gate checks for complete success and rejection of skipped/error/warn/nonzero-failure/missing-model/missing-test results. Final validation: `RUN_DB_TESTS=1 .venv/bin/python -m pytest -q` = 48 passed; default pytest = 41 passed/7 skipped. Ruff, compileall, pip check and git diff --check passed. Initial Ruff exception/import formatting findings were corrected and rechecked. Existing Phase 5 changed-row verification also passes the expanded tests.
 - Completion: 7/7 Phase 6 tasks, 6/10 phases complete. Followed the specific request to complete all Phase 6 tasks. PostgreSQL remains healthy; other services remain stopped. Disposable databases removed, persistent volumes/raw sources retained. No commit created; prior phase changes remain intact. No Phase 7 checkbox changed.
 - Next: P7.1 — review/complete ingestion unit test coverage within the automated testing/CI phase, reusing the existing tests rather than repeating completed work.
+
+### 2026-11-11 — P7.1 Unit coverage for boundaries and checkpoints
+- Status: PASS. Reviewed the existing ingestion/parser/retry/upsert/publication tests rather than recreating them. Added tests/unit/test_ingestion_checkpoints.py: simulated dates are start-inclusive/end-exclusive; synthetic extraction advances only after the frozen complete sequence interval; source reset, gap and incomplete interval never write a checkpoint. Source connections are mocked; transactional DB semantics remain integration-tested.
+- Verified 46 unit tests with `bash scripts/check.sh unit`, both in the project venv and a fresh base-requirements-only Python 3.14.4 venv. No raw dataset, dbt installation, native ODBC, SQL Server or API access required. Next: P7.2.
+
+### 2026-11-11 — P7.2 Disposable PostgreSQL regression tests
+- Status: PASS. Existing seven tests already cover atomic rollback/checkpoints, replay/corrections/backfill, duplicate keys/constraints, FX cache/failure, stock sequence/tombstones and orchestration. Added a changed-input-fingerprint regression: after candidate updates, detection of changed input rolls back every target/checkpoint and records a sanitized failed attempt.
+- `bash scripts/check.sh integration` = 8 passed in project and clean base-only environments. Each fixture creates/drops only its uniquely named database using the existing local PostgreSQL role; warehouse/source volumes untouched. Hosted job provisions its own PostgreSQL 17.11 service with ephemeral CI-only credentials. Next: P7.3.
+
+### 2026-11-11 — P7.3 Explicit Ruff style and formatting
+- Status: PASS. pyproject.toml declares py314, width 100, double quotes/four-space formatting and E4/E7/E9/F/I lint rules; pytest uses tests/ with strict marker validation. Ruff remains pinned 0.17.4. Mechanically formatted Python across src/scripts/tests/airflow/dags; before/after parsed AST comparison confirms no logic changes. Final Ruff lint/format and compileall pass for all 39 Python files.
+- docs/testing.md documents the style, behavior-oriented tests, scope and DB lifecycle. Formatting is the only change to existing business modules in this phase; no dependency or SQL/model logic upgrades. Next: P7.4.
+
+### 2026-11-11 — P7.4 GitHub Actions configuration
+- Status: PASS for configuration/local validation. Added .github/workflows/ci.yml: push/PR/manual triggers, read-only contents, checkout credentials disabled, bounded two-job Ubuntu 24.04 workflow. Official checkout/setup-python v6 actions use .python-version 3.14.4, fresh .venv, pip 26.3 and requirements.txt; no Airflow/dbt/SQL Server/cloud credentials or datasets required. Separate integration job has a healthy ephemeral PostgreSQL 17.11 service.
+- Downloaded official actionlint 1.7.12 binary into /tmp and checked its published SHA-256 before execution; workflow lint passed. Actionlint version/archive hash retained in docs/phase7-evidence.json. Official action docs consulted; no global tool install. Hosted success is explicitly reserved for P7.6. Next: P7.5.
+
+### 2026-11-11 — P7.5 Reproducible shared commands
+- Status: PASS. Added scripts/check.sh unit|integration (set -euo pipefail): lint, format check, compileall, then selected pytest suite. Makefile verify/verify-integration and GitHub Actions invoke the exact same commands. README/docs/testing.md explain setup, fixture assumptions, optional native-source/dbt verification and CI limitations.
+- Fresh temporary Python 3.14.4 venv installed only pip 26.3 + requirements.txt, with pip check passing and all 46 unit/8 integration tests passing. Existing uv-created .venv/system interpreter preserved. Isolated repository snapshot/test commit 67271c2b3f3a76d46ecd60ea6cd6bef8030e128b also passed both modes. An intentionally failing test produced pytest exit 1 through the shared shell script; probe removed before committing. No credentials/raw data in the snapshot; secret scan passed.
+- Evidence: docs/phase7-evidence.json includes test commit/branch, isolated checkout, clean environment and failure propagation. No main-workspace commit/branch changes made. Next: P7.6.
+
+### 2026-11-11 — P7.6 Hosted CI attempt awaiting GitHub authentication
+- Status: NOT COMPLETE; checkbox intentionally remains unchecked. User supplied https://github.com/rulnin/ecommerce-data-platform.git. Public API/read access verified an empty public repository. Prepared isolated branch `codex/phase7-ci-20261111` at commit `67271c2b3f3a76d46ecd60ea6cd6bef8030e128b`, retaining the existing Phase 1 history and current reviewed source snapshot. User's working tree remains intact.
+- Actual `git push origin codex/phase7-ci-20261111` failed with exit 128: could not read Username for https://github.com because terminal prompts are disabled. This session has no usable GitHub HTTPS authentication; GitHub CLI is absent. No hosted run has occurred and local test success is not represented as GitHub Actions success.
+- Authentication/manual-push request sent to the user without requesting a token in chat. Prepared checkout: /tmp/ecommerce-phase7-test-3b1369s6/repo. After authentication, push that branch, inspect the actual Actions result, capture run URL + commit SHA, and only then check P7.6. No force push, credentials/socket changes, or main-branch publication attempted.
+- Completion: 5/6 Phase 7 tasks verified, 6/10 complete phases. P7.6 is the next pending task; Phase 8 remains untouched. PostgreSQL healthy and data/volumes retained. Main workspace changes remain uncommitted alongside earlier phases; only the isolated test checkout contains the new test commit.
+
+### 2026-11-11 — P7.6 Hosted CI verified; Phase 7 complete
+- Status: PASS. After user instructed retry, the prepared branch push succeeded without changing credentials or the working branch. Published test commit `67271c2b3f3a76d46ecd60ea6cd6bef8030e128b` on `codex/phase7-ci-20261111` in https://github.com/rulnin/ecommerce-data-platform. Prior authentication blocker is resolved.
+- Actual hosted run: https://github.com/rulnin/ecommerce-data-platform/actions/runs/43006266346 (push event). GitHub API confirms completed/success for the exact test SHA and both jobs: unit (job 130474391847) and integration (job 130474392683). Their lint/format/compile/test steps passed, as did environment installation and PostgreSQL service setup. docs/phase7-evidence.json records run URL/SHA, completed job links/timestamps and separate local 46-unit/8-integration results. No local emulation substituted for hosted evidence.
+- The successful workflow uses the same shared script whose deliberate pytest failure was previously verified to propagate exit 1 in the isolated checkout. No forced update or main-branch push occurred. The empty remote selected the first pushed test branch as its default; no repository-default settings were changed by this agent.
+- Updated P7.6 only after hosted success, plus weekly/status counters and docs/testing.md. Final git diff --check and checklist/evidence consistency passed. Local working-tree changes remain uncommitted; the isolated test commit is now on GitHub. No source data/dependencies changed during retry.
+- Completion: 6/6 Phase 7 tasks, 7/10 phases complete. Next: P8.1 — measure baseline ingestion timings/counts against a fixed dataset and environment. Phase 8 untouched.
+
+### 2026-11-11 — P8.1 Fixed-snapshot ingestion baseline
+- Status: PASS. Added scripts/verify_phase8.py and measured the existing loader in a uniquely named disposable PostgreSQL DB. All nine CSV SHA-256 hashes match docs/dataset-manifest.json; exact bytes/hashes, Python/kernel/CPU/RAM, PostgreSQL version/settings, batch size 1000 and Docker samples are captured in docs/phase8-evidence.json. PostgreSQL 17.11 limited to 1 GiB; SQL Server/Airflow stopped.
+- Initial empty-target full load: 96.835 seconds caller wall time. Raw row/distinct-key counts: customers/orders 99,441 each; items 112,650; payments 103,886; reviews 99,224; products 32,951; sellers 3,095; translations 71; geolocation 738,332. Independent financial totals match the established BRL baseline. This is an empty-target observation, not a cold-cache or end-to-end multi-source benchmark. Next: P8.2.
+
+### 2026-11-11 — P8.2 Full vs simulated incremental replay
+- Status: PASS. Three full existing-target replays: 82.572 / 76.163 / 73.421 seconds (median 76.163). Three 2017-11-24 daily replays: 4.902 / 4.965 / 4.994 seconds (median 4.965), a 15.34x median wall-time ratio for these workloads. Every replay preserves rows/distinct keys, totals and nonregressing checkpoints.
+- Day accepts 1176 orders, 1366 items, 1214 payments and 1175 reviews with zero inserts/updates; unchanged references skip ingestion. Files are still hashed and order-associated CSVs scanned. These are replay costs, not new-arrival throughput/live CDC. Trials were sequential/fixed order without cache reset or confidence intervals. A brief PostgreSQL regression run overlapped the first full replay; background/cache/autovacuum noise is explicitly disclosed. Next: P8.3.
+
+### 2026-11-11 — P8.3 Actual SQL plans and buffers
+- Status: PASS. Added sql/queries/day_item_total.sql for selective Black Friday item investigation, without joining payments. Refreshed statistics and collected five EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) samples after one warm-up both before/after indexes, under the same DB/session/data/settings. Raw plans retain estimates/actual rows/loops and buffer usage in docs/performance/before-plan.json and after-plan.json.
+- Before median 77.511 ms; after median 7.389 ms, result unchanged at 1366 items / BRL 152,653.74. Docs explain instrumentation/client-transfer limits and plan changes, with official PostgreSQL references. This 10.49x query result is not claimed as ingestion/pipeline acceleration. Next: P8.4.
+
+### 2026-11-11 — P8.4 Measured additive lookup indexes
+- Status: PASS. sql/init/008_lookup_indexes.sql adds expression B-trees on raw.orders purchase timestamp text and raw.order_items order_id text, only after confirming improved query median in the disposable DB. Measured sizes 4,046,848 + 6,037,504 = 10,084,352 bytes; build statement 0.394 seconds. Applied additively to the idle persistent warehouse and rechecked unchanged row/totals/checkpoint metrics. Existing indexes retained.
+- docs/benchmarks.md documents exact-expression and canonical Olist date-text assumptions, storage/cache/insert-update maintenance costs and ordinary CREATE INDEX lock trade-off. No write-throughput gain/penalty percentage claimed; load timings precede index creation. No ingestion/dbt/Airflow logic or DB memory setting changed. Next: P8.5.
+
+### 2026-11-11 — P8.5 Run audit/logs and reliable recovery
+- Status: PASS. Evidence exports nine actual loader attempts with UUID, mode label, caller wall time, database audit duration, per-source scan/accept/insert/update/unchanged/dedup counts, status, error code and rejection count. Sanitized run UUID/code logs captured in docs/performance/pipeline.txt (WSL Asia/Bangkok timestamps; evidence UTC). Raw row bodies/credentials excluded.
+- Forced incremental item failure at the first accepted row: 3.005 seconds, simulated_failure and one rejection; target rows/totals/checkpoints unchanged. Recovery: 5.124 seconds, success with identical baseline metrics. Python process peak RSS 48,572 KiB; Docker before/after samples explicitly are not peak container measurements. Disposable benchmark DB dropped after verification. Next: P8.6.
+
+### 2026-11-11 — P8.6 Operations and verified warehouse backup/restore
+- Status: PASS. Added docs/runbook.md for start/stop/resources, audit inspection, ingestion replay/backfill, stale-running audit and source sequence cautions, quality publication, private backup and non-destructive restore. Real custom-format pg_dump of working warehouse: 181,669,260 bytes in 25.354 seconds; pg_restore into a NEW disposable DB: 37.328 seconds. All 153 user tables match original row counts and order-independent canonical row hashes. Rechecked original unchanged; restored DB dropped. Ignored local dump retained mode 600 with SHA-256 recorded; no raw backup committed.
+- Scope is warehouse only: roles/secrets, SQL Server and Airflow metadata need separate coordinated backups; those restores are not falsely claimed. Persistent volumes never reset. Runbook describes compatible source outbox/target checkpoint handling, consumer publication and resource caps; README links measured benchmark/report/runbook.
+- Verification: `python -m scripts.verify_phase8` passed full/replay/failure/recovery/index/backup scenarios. `RUN_DB_TESTS=1 .venv/bin/python -m pytest -q` = 54 passed; shared unit/integration scripts = 46/8 passed. Ruff lint/format (40 files), compileall and git diff --check pass. New script duplicate import introduced during summary-field cleanup was caught by Ruff and removed; final checks rerun. Secret scan passed; dump ignored and permissions verified. No unrelated logic/dependency/CI changes and no remote push this phase.
+- Completion: 6/6 Phase 8 tasks; 8/10 phases complete. Followed the specific all-Phase-8 request. PostgreSQL remains healthy; other services remain stopped. Source data/volumes preserved; changes remain uncommitted alongside earlier work. Next: P9.1 — write business SQL questions/queries against validated marts, in the next requested phase.
+
+### 2026-11-11 — P9.1 Eight business SQL questions
+- Status: PASS. Added sql/analytics/01_overview.sql through 08_fx_coverage.sql for volume/sales proxy, monthly delivered value, categories, buyer states, payment mix, repeat people, anonymous seller ranks and FX coverage. Queries read validated published tables, preserve item/payment grains, use full-population denominators before top-N limits and retain explicit status/currency definitions.
+- `python -m scripts.verify_phase9` executes all eight queries in one READ ONLY REPEATABLE READ transaction against the current successful publication. Independent raw counts/item/payment/delivered-value totals match; monthly/state delivered totals, payment-type totals, repeat-order counts and FX partitions reconcile. No ingestion/model data or logic changed. SQL SHA-256 and result counts recorded in docs/phase9-evidence.json. Next: P9.2.
+
+### 2026-11-11 — P9.2 Actual aggregate result set and screenshot
+- Status: PASS. Generated docs/analytics-results.md and analytics-results.json with all query results and attribution; docs/analytics.md explains each question, denominator and limitations. Added optional scripts/capture_portfolio.py to render the aggregate report into docs/screenshots/phase9-analytics.png; actual PNG visually inspected, with source attribution, revenue definition, FX missingness and repeat-buyer caveat visible.
+- Observed delivered item value BRL 13,221,498.11; top category health_beauty BRL 1,233,131.72 (9.33%); credit cards 78.34% of tender value; repeat delivered people 2,801/93,358 (3.00%). FX coverage 8/774 days, 3714/99441 orders (3.73%); USD result is explicitly partial. Snapshot dates 2016-09-04 through 2018-10-17, not current operations. No forecast, cohort-retention or causal commercial claim.
+- Capture uses existing digest-pinned ephemeral Chromium and websocket-client 1.9.0 in /tmp only, with no secrets or filesystem mounts in the browser. This is a static SQL scorecard, not a deployed application. Container stopped/removed after capture; project dependencies unchanged. Next: P9.3.
+
+### 2026-11-11 — P9.3 Architecture and logical ERD
+- Status: PASS. Added docs/architecture.md and docs/data-model.md, native Mermaid plus rendered SVG copies in docs/diagrams. Diagrams distinguish source loaders, audit/raw/staging, developer and candidate marts, quality/publication and consumers, and show WSL-vs-container dependency boundaries. Current Airflow orchestration is explicitly operational; dimensional publication remains a WSL command.
+- Four Mermaid definitions (README, two architecture diagrams, ERD) actually parsed and rendered with Mermaid 11.4.1; hashes/types/paths recorded in docs/phase9-render-evidence.json. All SVG XML parses; no script tags. All seven ERD relations' documented columns match live information_schema. ERD describes tested logical keys, not fabricated native FKs; no direct item/payment join or invented inventory history. Next: P9.4.
+
+### 2026-11-11 — P9.4 Recruiter-readable English README and data rights
+- Status: PASS. Rewrote README around concrete business problem, verified results, stack, setup, source loading, dbt publication, Airflow evidence/screenshots, tests, operations and presentation links. Removed obsolete sandbox-access and vanished temporary uv-path guidance; retained existing Python 3.14.4/system-venv separation and actual native-driver platform constraints. No code install/reingestion was repeated just to document it.
+- Added docs/data-rights.md: Olist/Kaggle source attribution and publisher CC BY-NC-SA 4.0 listing verified against official publisher/license pages; adapted aggregate reports identify filters/grouping/calculations and preserve data terms. FX provider terms and synthetic inventory provenance are explicit; source code is not falsely relicensed by the data notice.
+- Verified 58 local document links and bash syntax of nine fenced shell blocks. README distinguishes the actual Phase 7 hosted CI commit from later local changes, and explicitly defers clean-clone release verification to Phase 10. No raw CSVs/backups/credentials committed. Next: P9.5.
+
+### 2026-11-11 — P9.5 Decision and trade-off narrative
+- Status: PASS. Added docs/trade-offs.md covering PostgreSQL target vs SQL Server source, batch vs real streaming, full vs incremental, selective item-fact incrementality vs full candidate publication, separate fact grains, raw JSONB cost, local vs AWS, dependency isolation and bounded LocalExecutor.
+- Uses measured Phase 8 samples and explicit single-host/cache/background limits, without inventing AWS deployment/performance, production SLA or ingestion acceleration from lookup indexes. Documents future production responsibilities as unimplemented scope and retains visible FX/mapping limitations. Next: P9.6.
+
+### 2026-11-11 — P9.6 Walkthrough and CV/LinkedIn drafts
+- Status: PASS. Added docs/walkthrough.md with timed sections, evidence to open, optional read-only demo command and draft CV/LinkedIn text. Spoken script is 461 words, approximately 3.55 minutes at 130 wpm; timing is an estimate, not a claimed live rehearsal. Narration states synthetic sources, explicit dimensional publication, revenue/tender separation, failure evidence, CI and actual local benchmarks.
+- No employment/production/cloud/business-impact claims fabricated; no profile updated or external message sent. Draft material and diagrams are ready for review; Phase 10 release/rehearsal tasks remain pending.
+- Final validation: live eight-query/report verifier PASS; four Mermaid parse/render checks plus SVG XML/live ERD checks PASS; 58 local links/nine bash examples PASS; screenshot visually checked; source/report secret scan PASS. Shared unit/integration commands = 46/8 passed; `RUN_DB_TESTS=1 .venv/bin/python -m pytest -q` = 54 passed. Ruff lint/format (42 files), compileall and git diff --check passed. Initial unused/import formatting findings in optional capture tool were fixed/rechecked.
+- Completion: 6/6 Phase 9 tasks, 9/10 phases complete. Followed the specific all-Phase-9 request. No ingestion/model/dependency/CI changes; PostgreSQL remains healthy, other services stopped and ephemeral browser removed. Source data/volumes retained. Changes remain uncommitted alongside earlier work; no remote push in this phase.
+- Next: P10.1 — clean-clone release verification in a fresh folder, in the next requested phase.
 
 ## 6. Decisions & scope guardrails
 

@@ -1,270 +1,224 @@
 # E-Commerce Data Platform
 
-A local-first data engineering portfolio integrating historical Olist e-commerce
-orders, public exchange rates, and synthetic SQL Server inventory into PostgreSQL.
-The business goal is validated order, customer and daily sales analytics without
-multiplying item and payment totals. Phase 1 provides reproducible source acquisition,
-profiling, contracts and a verified PostgreSQL service. Phase 2 adds transactional
-CSV ingestion, simulated date batches, checkpoints and tested recovery.
-Phase 3 adds dated ECB FX rates and a synthetic SQL Server stock source with
-transactional sequence-based extraction. Phase 4 orchestrates the loaders with
-Airflow, retries, operational summaries and recovery checks. Phase 5 adds dbt
-staging views, customer/product/seller/date dimensions and separate item/payment
-facts with daily sales metrics. Phase 6 validates keys, mappings, counts and financial
-totals before transactional publication to consumer tables. Reporting remains later work.
+A local data engineering portfolio that combines historical Brazilian e-commerce
+orders, dated exchange rates and synthetic SQL Server inventory into a validated
+PostgreSQL warehouse. The central problem is correctness: an order can have several
+items and several payments, so joining those rows directly can multiply money.
 
-```text
-Olist CSVs -> data/raw -> source profiling + contracts
-                              |
-                              v (Phase 2 onward)
-API + synthetic SQL Server -> PostgreSQL raw -> staging -> marts
-                                   ^
-                           Airflow (implemented) + dbt (implemented)
+The implementation demonstrates transactional ingestion, idempotent replay,
+corrections/deletes, Airflow recovery, dbt dimensional modeling, quality-gated
+publication, hosted CI and reproducible business SQL. Dimensional dbt publication
+runs explicitly in WSL; the current Airflow DAG orchestrates ingestion and its
+operational summary/checks.
+
+## Results to inspect first
+
+| Verified result | Evidence |
+|---|---|
+| 99,441 orders; 112,650 items; 103,886 payment entries | [Eight business questions and actual results](docs/analytics-results.md) |
+| BRL 13,221,498.11 delivered-item sales proxy | [Revenue definition and quality rules](docs/data-quality.md) |
+| 110 dbt quality tests; invalid candidates preserve prior publication | [Failure/correction evidence](docs/phase6-evidence.json) |
+| 54 automated tests; hosted unit and PostgreSQL integration jobs passed | [GitHub Actions run](https://github.com/rulnin/ecommerce-data-platform/actions/runs/43006266346) |
+| Full replay median 76.2 s; daily replay median 5.0 s on the measured WSL host | [All benchmark samples and limits](docs/benchmarks.md) |
+| Warehouse restore matches all 153 user tables | [Backup evidence](docs/phase8-evidence.json) |
+
+Revenue is delivered-order item value excluding freight, refunds, fees and taxes,
+not accounting recognized revenue. Payment value is independent tender amount.
+FX coverage is only 8/774 calendar days (3.73% of orders); USD totals are partial.
+The snapshot covers 2016–2018, not current Olist operations. First/last months are
+partial periods; repeat-buyer share is not cohort retention.
+
+![Verified aggregate SQL results](docs/screenshots/phase9-analytics.png)
+
+## Architecture and model
+
+```mermaid
+flowchart LR
+    C[Olist CSV] --> I[Python loaders]
+    F[Dated ECB FX] --> I
+    S[Synthetic SQL Server] --> I
+    I --> R[PostgreSQL raw and audit]
+    R --> T[dbt staging and candidate marts]
+    T --> Q{Quality gate}
+    Q -->|pass| P[Atomic published tables]
+    Q -->|fail| K[Keep prior publication]
+    P --> B[Read-only business SQL]
+    A[Airflow] -. ingestion and operational checks .-> I
 ```
 
-## Setup
+See the [execution boundaries](docs/architecture.md) and
+[logical ERD with grains](docs/data-model.md). Customer/product/seller/date
+dimensions support separate item/payment facts and daily summaries. SQL Server
+inventory is explicitly synthetic current state; it is not historical real stock.
 
-Use the Linux filesystem in WSL2. This project uses the existing Python 3.14.4 on
-Ubuntu 26.04.1, Docker Engine 29.9.3 and Compose v5.7.0. Tested with approximately
-11 GiB WSL RAM and PostgreSQL limited to 1 GiB. Do not replace system Python or
-install another interpreter. Airflow dependencies stay in containers.
+Stack: Python **3.14.4**, PostgreSQL **17.11**, SQL Server **2022**, Airflow **3.4.0**,
+dbt Core **1.12.6** / dbt-postgres **1.11.0**, Docker Compose, pytest and Ruff.
+Host tooling uses an existing uv-created `.venv`; Airflow dependencies remain in
+its container. No cloud account or paid service is required.
 
-Install uv following its [official instructions](https://docs.astral.sh/uv/getting-started/installation/).
-The verified uv version is 0.13.7. This session's temporary installation is in
-`/tmp/ecommerce-uv`; add it to PATH if reusing it. A fresh developer should install
-uv persistently using the official instructions. Git and Docker are required.
+## Setup in WSL
 
-From a clone of this repository:
+Use the Linux filesystem, not `/mnt/c`. Verified host: Ubuntu 26.04.1 WSL2 x86_64,
+Docker Engine 29.9.3, Compose v5.7.0 and about 11 GiB WSL RAM. Prerequisites are
+Git, working Docker/Compose, the existing Python 3.14.4 and
+[uv](https://docs.astral.sh/uv/getting-started/installation/). Do not replace system
+Python or install Python 3.12. The old temporary uv installation is not required;
+install uv persistently through its official instructions if it is absent.
 
 ```bash
+git clone https://github.com/rulnin/ecommerce-data-platform.git
 cd ecommerce-data-platform
-python3.14 --version  # must be 3.14.4
+python3.14 --version                 # 3.14.4
 uv --version
+docker info                         # must work in this WSL session
 bash scripts/setup_venv.sh
 source .venv/bin/activate
-which python
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-dbt.txt
 python -m pip check
-python -m pytest -q
 ```
 
-`.python-version` pins 3.14.4; `pyproject.toml` permits 3.14.4 through 3.14.x.
-The setup script prohibits interpreter downloads, seeds pip and preserves an
-existing venv. Requirements files provide direct pins; transitive dependencies
-are not fully locked. Use pip inside the activated venv, rather than uv sync.
-Install `requirements-dbt.txt` for the dimensional warehouse;
-`requirements-compatibility.txt` retains the same dbt pins for compatibility probes.
-See [Python compatibility evidence](docs/python-compatibility.md) for limitations.
-Exit the shell environment with `deactivate`.
+The setup script preserves/repairs an existing venv, prohibits Python downloads,
+and seeds pip. Direct package versions are pinned; transitive dependencies are not
+fully locked. [Python compatibility evidence](docs/python-compatibility.md) records
+what was tested. Public remote content reflects the commits pushed there; local
+Phase 8/9 work must be committed/published before a clean clone can include it.
+Clean-clone release verification belongs to Phase 10 and is not claimed here.
 
-Create local configuration without overwriting an existing file:
+Create `.env` without overwriting an existing configuration:
 
 ```bash
-python3 - <<'PYENV'
+python - <<'PY'
 from pathlib import Path
 import secrets
-path = Path('.env')
-if not path.exists():
-    with path.open('x') as stream:
-        stream.write(Path('.env.example').read_text().replace(
-            'POSTGRES_PASSWORD=\n', 'POSTGRES_PASSWORD=' + secrets.token_hex(24) + '\n'))
-    path.chmod(0o600)
-PYENV
-```
-
-`.env`, `.venv`, datasets and caches are ignored. Never commit credentials or raw
-CSV data. If port 5432 is occupied, change POSTGRES_PORT in `.env` before startup.
-
-## PostgreSQL
-
-```bash
+p = Path('.env')
+if not p.exists():
+    p.write_text(Path('.env.example').read_text().replace(
+        'POSTGRES_PASSWORD=\n', 'POSTGRES_PASSWORD=' + secrets.token_hex(24) + '\n'))
+    p.chmod(0o600)
+PY
 docker compose config --quiet
-docker compose up -d --wait --wait-timeout 120 postgres
-docker compose ps
-docker compose exec -T postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT version();"'
+docker compose up -d --wait postgres
 ```
 
-Verified image: `postgres:17.11-bookworm`; named volume:
-`ecommerce-data-platform_postgres_data`; port bound to `127.0.0.1` only. The image
-initializes credentials only on an empty volume: changing `.env` does not rotate
-an existing database password. Phase 2 loads raw tables; Phase 5 builds analytical marts using dbt.
+`.env`, `.venv`, native driver files, CSVs and backups are ignored. Environment
+variables override `.env`. Ports bind to localhost. Changing `.env` passwords does
+not rotate credentials in an initialized database volume. Avoid printing rendered
+Compose config or connection URLs. The developer DB role needs CREATEDB for the
+disposable integration tests; production RBAC is outside this local demo.
+
+## Load sources and publish
+
+Download the public snapshot, compare its hashes with
+[the reviewed manifest](docs/dataset-manifest.json), then load raw data:
 
 ```bash
-docker compose stop postgres  # stop, retaining container and data
-docker compose start postgres
-docker compose down           # remove containers/network, preserve database volume
-```
-
-For troubleshooting: `docker compose logs --tail 100 postgres` and
-`docker compose ps`. Avoid printing `docker compose config` without `--quiet`,
-which would expose substituted credentials. A fresh reset should use a different
-Compose project name and fresh volume, rather than erasing existing data:
-`docker compose -p ecommerce-review up -d --wait postgres` after stopping the old
-service to free its port. Clean up that review container with the same `-p` name
-and `down`; retain its volume until no longer needed. Do not use `down -v` casually.
-
-In this AI session Docker/Git access requires approved execution outside the
-sandbox, which maps host groups and masks Git metadata. The normal WSL terminal
-works without sudo; do not reinstall Docker or change socket permissions.
-
-## Dataset and source profiling
-
-Phase 2 provides configuration, bounded connection retries and transactional CSV
-upserts. See [loading, recovery and evidence](docs/csv-ingestion.md). For a full load:
-`python -m src.ingestion.csv_pipeline --batch-id full-olist-v2`.
-To inspect a file without loading it:
-`python -m src.ingestion.csv_ingestion data/raw/olist_orders_dataset.csv --batch-size 1000`.
-The inspection command reports counts only. To simulate one day's arrivals:
-`python -m src.ingestion.csv_pipeline --batch-id day-2017-11-24 --start 2017-11-24 --end 2017-11-25`.
-Configuration keys and defaults are listed in `.env.example`; process environment
-values override `.env`. Connection retries do not replay failed transactions.
-
-Source: [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce),
-Kaggle dataset version 2 (publisher metadata: updated 2021-10-01). Publisher lists
-CC BY-NC-SA 4.0. Attribute Olist and observe its noncommercial/share-alike terms
-when reusing or distributing data; this repository includes aggregate profiles,
-not CSV contents. Inventory in later phases will be explicitly synthetic.
-
-```bash
-source .venv/bin/activate
 python scripts/download_dataset.py
+# If public download is unavailable: use --archive /path/to/downloaded.zip
 python scripts/profile_dataset.py --input data/raw --output docs/source-profile.json
-python -m pytest -q
+python -m src.ingestion.csv_pipeline --batch-id initial-full
+python -m src.ingestion.api_ingestion --date 2017-11-25 --batch-id fx-demo
 ```
 
-The downloader uses the public Kaggle archive endpoint, bounded timeouts, retries
-and size limits. It verifies all nine fixed filenames before extraction, preserves
-identical existing CSVs and refuses to overwrite differing ones. Its local manifest
-is `data/dataset-manifest.json`. If access requires an account or the endpoint changes,
-download the ZIP yourself from the publisher page and use:
-`python scripts/download_dataset.py --archive /path/to/archive.zip`.
-No credentials are logged or stored by this script. This URL is not an immutable
-snapshot: compare hashes with [the verified manifest](docs/dataset-manifest.json).
-
-## Phase 3 external sources
-
-Frankfurter v2 supplies explicitly dated ECB USD/BRL reference rates. Weekend
-requests retain the earlier returned observation date. The client caches by
-requested date, upserts by actual rate date and supports explicit refresh:
+The downloader preserves identical files and refuses to overwrite differing ones.
+Daily CSV slices are a simulation, not live CDC:
 
 ```bash
-source .venv/bin/activate
-python -m src.ingestion.api_ingestion --date 2017-11-25 --batch-id fx-2017-11-25
+python -m src.ingestion.csv_pipeline --batch-id day-2017-11-24 \
+  --start 2017-11-24 --end 2017-11-25
 ```
 
-See [FX schema, coverage probes and conversion direction](docs/fx-contract.md).
-SQL Server is an optional Compose profile with a named volume and localhost-only
-port. Follow [synthetic source setup and recovery](docs/sqlserver-source.md) to
-generate local credentials, install the project-local WSL ODBC runtime and seed
-100 valid product IDs. Inventory is simulated and must not be represented as Olist
-stock. The pinned pyodbc dependency is separate from system/ODBC libraries.
+For the synthetic source, configure unique MSSQL_SA_PASSWORD and SQLSERVER_PASSWORD
+in local `.env`. Start the source, install the project-local native driver, seed
+100 mapped demo products, then ingest its committed outbox:
 
 ```bash
-docker compose --profile sqlserver up -d --wait --wait-timeout 240 sqlserver
+python -m pip install -r requirements-sqlserver.txt
+bash scripts/setup_odbc.sh
+docker compose --profile sqlserver up -d --wait sqlserver
 python -m scripts.seed_synthetic_inventory
-python -m src.ingestion.sqlserver_ingestion --batch-id stock-initial
-python -m scripts.verify_phase3
-docker compose --profile sqlserver stop sqlserver
+python -m src.ingestion.sqlserver_ingestion --batch-id stock-demo
 ```
 
-Run the setup steps in the linked guide before those commands. The verification
-script deliberately changes synthetic rows to prove same-timestamp updates,
-tombstones and rollback/recovery; it preserves the initial full-load evidence.
-metadata.external_runs and metadata.external_checkpoints expose auditable external
-attempts separately from the Phase 2 CSV run records. Data and checkpoints commit
-together. [Phase 3 evidence](docs/phase3-evidence.json) records independent loads of
-all three sources. Stop SQL Server when idle to reduce local memory use.
+The native-driver setup is explicitly for this verified Ubuntu 26.04 amd64 host;
+see [source setup, credential and platform details](docs/sqlserver-source.md).
+Do not reset its source sequence or a target cursor to hide an inconsistency.
 
-## Phase 4 orchestration
+Build and inspect dbt developer models; then run the separate quality-gated
+publication command before executing consumer queries:
 
 ```bash
-bash scripts/airflow.sh setup
-bash scripts/airflow.sh status
-```
-
-Open http://localhost:8080 with username admin and the generated
-AIRFLOW_ADMIN_PASSWORD from ignored .env. The DAG starts paused. Read the
-[Airflow runbook](docs/airflow.md) before triggering, backfilling or simulating a
-failure. It uses LocalExecutor and isolated constrained container dependencies;
-the host venv is unchanged. The daily operational summary keeps items and payments
-at separate grains. This is not the Phase 5 dimensional warehouse.
-
-[Runtime proof](docs/airflow-runtime.json), [DAG/recovery evidence](docs/phase4-evidence.json)
-and [UI captures](docs/screenshots/phase4-recovered.png) record the tested deployment.
-`bash scripts/airflow.sh stop` stops Airflow and SQL Server while preserving data.
-
-## Source profile and verification
-
-The profile includes SHA-256, columns, counts, empty fields, candidate keys, exact
-row duplicates and distinct nonempty relationship violations. It fails on missing
-files or malformed CSV structure; data findings are reported diagnostically and do
-not cause a failing exit status. Raw strings are retained; SQL types and final
-review/geolocation key decisions belong to ingestion design.
-
-Measured results include 99,441 orders, 112,650 items and 103,886 payments;
-261,831 exact geolocation duplicates; 814 repeated review IDs without exact review
-row duplicates; two untranslated product categories. Item and payment grains stay
-separate. See [source contracts](docs/data-contracts.md), [profiling notes](docs/source-profiling.md),
-[environment evidence](docs/environment.md), and [task tracker](ECOMMERCE_DATA_PLATFORM_TASKS.md).
-
-`make profile` and `make verify` are optional shortcuts if make is installed;
-the Python commands above are the verified path. Use `RUN_DB_TESTS=1 python -m pytest -q`
-for disposable-database tests and `python -m scripts.verify_phase2` for real-data
-rerun/recovery verification. Phase 1–6 evidence is in the tracker.
-CI and performance benchmarking remain later-phase work.
-
-## dbt warehouse (Phase 5)
-
-```bash
-source .venv/bin/activate
-python -m pip install -r requirements-dbt.txt
 python scripts/dbt.py debug
 python scripts/dbt.py build
 python scripts/dbt.py docs generate
 python scripts/dbt.py docs serve --host 127.0.0.1 --port 8081
-# Repeatable live + disposable-database validation:
-python -m scripts.verify_phase5
-```
-
-The wrapper loads local `.env`; profiles contain environment references only.
-Twenty models cover thirteen raw-source staging views, four dimensions and three
-facts. Items and payments retain separate grains and aggregate independently.
-Only the item fact is incremental; changed parent attributes are detected too.
-USD measures remain null for days without a stored ECB observation within seven
-days. Airflow still runs its Phase 4 operational summary; dbt runs explicitly.
-See [warehouse grains, financial rules, targets and rebuild runbook](docs/dbt-warehouse.md)
-and [executed Phase 5 evidence](docs/phase5-evidence.json). Generated dbt docs stay
-local under ignored `dbt/target/`.
-
-## Quality and publication (Phase 6)
-
-```bash
-source .venv/bin/activate
+# In another activated terminal, after stopping docs serve if preferred:
 python -m src.quality.publication
-# Exercises bad-input rejection and recovery in a disposable database:
-python -m scripts.verify_phase6
+python -m scripts.verify_phase9
 ```
 
-Read validated consumer tables from `published`, rather than developer `marts`
-or `candidate_marts`. Publication requires every dbt test and model to succeed;
-failures leave the previous publication intact and return a nonzero exit status.
-`docs/quality-report.json` records per-check expected/actual violations and failing
-keys; `metadata.quality_runs` retains attempts. `revenue_brl` is delivered-order
-item value excluding freight, refunds and fees, separate from payment amounts.
-See [quality rules, count baseline and recovery protocol](docs/data-quality.md)
-and [Phase 6 execution evidence](docs/phase6-evidence.json). Airflow publication
-integration remains explicit future work; the Phase 4 DAG is unchanged.
+Publication builds candidates, tests every enabled model/test and updates all seven
+`published` tables in one transaction. Nonzero exit means publication did not
+complete. Consumer queries use `published`, not developer/candidate marts. Review
+[the report](docs/quality-report.json) and fix failed source contracts before replay.
+The baseline drift gate expects the reviewed full snapshot; loading a small slice
+into an otherwise empty warehouse does not satisfy that contract.
 
-## Automated checks (Phase 7)
+## Airflow and failure recovery
+
+After source configuration, `bash scripts/airflow.sh setup` creates missing local
+metadata secrets/database, builds the constrained image and starts services.
+Open localhost:8080; admin credentials remain in `.env`. The DAG defaults paused,
+has a historical date bound, retries and bounded task execution. See the
+[Airflow runbook](docs/airflow.md) for manual dates, native backfill and failed-task
+clearing. Do not expose the local development service publicly.
+
+![Actual failed Airflow quality task](docs/screenshots/phase4-failed.png)
+
+[Successful run](docs/screenshots/phase4-success.png) ·
+[Recovered run](docs/screenshots/phase4-recovered.png) ·
+[Recorded attempts](docs/phase4-evidence.json)
+
+## Tests and repeatable evidence
 
 ```bash
-bash scripts/check.sh unit
-docker compose up -d --wait postgres
-bash scripts/check.sh integration
+bash scripts/check.sh unit            # no datasets, SQL Server, API or cloud
+bash scripts/check.sh integration     # healthy Postgres, disposable test DBs
+RUN_DB_TESTS=1 python -m pytest -q     # complete lightweight suite
 ```
 
-These are the same check commands used in GitHub Actions. The unit job needs no
-source data or external credentials; integration tests use disposable PostgreSQL
-databases. See [test scope, setup and coding standards](docs/testing.md). Hosted
-CI verification status is recorded in [Phase 7 evidence](docs/phase7-evidence.json)
-and the task tracker; local validation alone does not establish hosted success.
+Both CI jobs use these same check scripts for lint, format, compilation and tests.
+[Testing scope/style](docs/testing.md) explains dependencies and cleanup. The hosted
+run linked above verifies the Phase 7 test commit; it is not a claim that later
+uncommitted documentation or scripts already passed hosted CI.
+
+Heavier explicit verification commands are `python -m scripts.verify_phase5`,
+`python -m scripts.verify_phase6`, and `python -m scripts.verify_phase8`. They
+create disposable databases and may take several minutes; Phase 8 also retains
+an ignored warehouse dump. Read their runbooks before invoking them. Phase 2/3
+source evidence remains available without repeating completed source mutations.
+
+## Operate and present
+
+- [Business questions, observed findings and interpretation](docs/analytics.md)
+- [Results linked to all eight SQL files](docs/analytics-results.md)
+- [Trade-offs and current limits](docs/trade-offs.md)
+- [Replay, backup/restore, resources and stop commands](docs/runbook.md)
+- [Four-minute walkthrough and CV/LinkedIn drafts](docs/walkthrough.md)
+- [Canonical checklist and implementation evidence](ECOMMERCE_DATA_PLATFORM_TASKS.md)
+
+Stop heavier services with `bash scripts/airflow.sh stop`; PostgreSQL remains
+available. `docker compose stop postgres` stops it while preserving its volume.
+Never delete working volumes as a recovery shortcut. Use `deactivate` to leave
+the host venv. No AWS deployment, HA, production SLA or fully automated dimensional
+orchestration is claimed; see the trade-offs and remaining Phase 10 work.
+
+## Dataset rights
+
+Source: **Brazilian E-Commerce Public Dataset by Olist**, published on
+[Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), whose publisher
+lists [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+Dataset-derived report aggregates retain attribution/noncommercial/share-alike
+terms; adaptations are identified in [data rights](docs/data-rights.md). Raw CSVs
+are downloaded locally and are not committed. Inventory is generated synthetic
+data, not an Olist source. FX provider terms remain applicable. No company/private
+data or proprietary assets are used, and no endorsement by Olist is implied.
