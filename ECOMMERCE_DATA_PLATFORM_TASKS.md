@@ -4,7 +4,7 @@
 >
 > **Level:** Intermediate | **Budget:** Rp0 | **Primary OS:** Windows 11 + WSL2 Ubuntu 24.04 LTS | **Working directory:** `~/projects/data-engineering/ecommerce-data-platform`
 >
-> **Last updated:** 2026-11-11 | **Revision:** v2 (explicit Python venv + WSL2 Docker setup) | **Status:** Phases 1–9 complete; Phase 10 release verification in progress
+> **Last updated:** 2026-11-11 | **Revision:** v2 (explicit Python venv + WSL2 Docker setup) | **Status:** Phases 1–10 complete; v1.0.0 released (CV update waived by user)
 
 ## 0. Project overview
 
@@ -33,16 +33,16 @@ Windows 11
 
 ### Definition of Done (project-level)
 
-- [ ] `README.md` (English) explains the business problem, architecture, setup, run steps, data model, trade-offs, and results.
-- [ ] New reviewer can clone the repository, configure `.env`, download sample data, and run the pipeline from documented commands.
-- [ ] CSV + API + SQL Server ingestions work, with clear provenance and auditable run metadata.
-- [ ] Incremental ingestion, idempotent reruns, retries, backfill, and deterministic tests work.
-- [ ] Warehouse models expose validated customer, product, seller, order, payment, and daily sales metrics.
-- [ ] Reconciliation prevents order-item/payment join multiplication and checks business totals.
-- [ ] Failed rows are quarantined or reported with actionable error detail.
-- [ ] Airflow DAG shows successful and simulated failed/recovered runs.
-- [ ] GitHub Actions checks pass; no credentials, private data, or heavy raw datasets committed.
-- [ ] Screenshots, measured benchmarks, demo instructions, and an interview-ready explanation are included.
+- [x] `README.md` (English) explains the business problem, architecture, setup, run steps, data model, trade-offs, and results.
+- [x] New reviewer can clone the repository, configure `.env`, download sample data, and run the pipeline from documented commands.
+- [x] CSV + API + SQL Server ingestions work, with clear provenance and auditable run metadata.
+- [x] Incremental ingestion, idempotent reruns, retries, backfill, and deterministic tests work.
+- [x] Warehouse models expose validated customer, product, seller, order, payment, and daily sales metrics.
+- [x] Reconciliation prevents order-item/payment join multiplication and checks business totals.
+- [x] Failed rows are quarantined or reported with actionable error detail.
+- [x] Airflow DAG shows successful and simulated failed/recovered runs.
+- [x] GitHub Actions checks pass; no credentials, private data, or heavy raw datasets committed.
+- [x] Screenshots, measured benchmarks, demo instructions, and an interview-ready explanation are included.
 
 ---
 
@@ -140,9 +140,9 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 | 7 | Automated tests + CI | ✅ Complete | CI checks and reproducible testing |
 | 8 | Performance + observability | ✅ Complete | Measurements and runbooks |
 | 9 | Analytics + recruiter documentation | ✅ Complete | Demo, diagrams, English README |
-| 10 | Final hardening + interview rehearsal | 🔄 In progress | Clean release verification |
+| 10 | Final hardening + interview rehearsal | ✅ Complete | Verified v1.0.0 release |
 
-**Progress:** 9 / 10 phases complete. Update manually after verifying each phase.
+**Progress:** 10 / 10 phases complete. Update manually after verifying each phase.
 
 ### Phase 1 — Environment, repository, and dataset (Week 1)
 
@@ -267,7 +267,7 @@ Review Phase [NUMBER] of ECOMMERCE_DATA_PLATFORM_TASKS.md. Compare the implement
 - [x] P10.2 Run end-to-end data ingestion, DAG, dbt build/tests, and CI successfully.
 - [x] P10.3 Verify no secrets, proprietary SQL/data, large CSVs, unnecessary files, or internal identifiers are committed.
 - [x] P10.4 Review SQL performance, idempotence, code quality, and cleanup/stop commands.
-- [ ] P10.5 Create a versioned release/tag with a concise changelog.
+- [x] P10.5 Create a versioned release/tag with a concise changelog.
 - [x] P10.6 Rehearse interview Q&A: duplicates, checkpoints, failure recovery, source-target reconciliation, scaling.
 - [x] P10.7 Pin repository to GitHub profile (CV update waived by user on 2026-11-11).
 
@@ -829,6 +829,13 @@ deactivate
 ### 2026-11-11 — P10.6–P10.7 Rehearsal, profile and adjusted CV scope
 - Status: PASS. Added docs/interview-qa.md: evidence-based agent-led rehearsal across duplicate grain, crash/commit/checkpoints, source sequence ordering, deletes/late updates, independent financial reconciliation, publication failure, FX limits, workload scaling and coordinated recovery. Answers checked against actual source/tests and the new clean-stack exercise; no human spoken rehearsal claimed.
 - User explicitly waived CV updates to focus on the project. P10.7 scope now records that waiver. User pinned the repository; authenticated GitHub GraphQL confirmed rulnin/ecommerce-data-platform in profile pinnedItems. No CV/profile text was edited by this agent. Next: P10.5 — publish versioned source/tag/release after final CI.
+
+### 2026-11-11 — P10.5 Published release and project completion
+- Status: PASS. Final code candidate `2d9327c8fa8d0f96dabc701be8ac62170ab8a206` passed both hosted jobs: https://github.com/rulnin/ecommerce-data-platform/actions/runs/43016218630. Scanned 171 snapshot files and 192 reachable historical blobs: no actual configured secret matches, PAT/private-key matches, forbidden raw/local/archive/key artifacts or files above the 5 MiB review threshold. Provenance/manual source review confirms only public/synthetic sources; project audit UUIDs are retained intentionally.
+- Created and pushed annotated v1.0.0 tag without force, published a non-draft/non-prerelease GitHub release with CHANGELOG.md, and verified the remote annotated tag resolves to the tested commit. Release: https://github.com/rulnin/ecommerce-data-platform/releases/tag/v1.0.0. Published source to main and set it as repository default so normal clone instructions obtain the current project. Existing branches/tags were not replaced/deleted. Pyproject version is 1.0.0.
+- Added docs/release-verification.md, docs/interview-qa.md and fresh release evidence. Marked P10.5 and project Definition of Done only after all core checks and actual release publication. The immutable tag freezes the verified implementation; a subsequent documentation-only main commit records publication confirmation/checklist completion without moving the tag.
+- Completion: 7/7 Phase 10 tasks under the user-approved scope (CV update waived); 10/10 phases complete. Clean remote clone, all sources, fresh DAG failure/recovery/backfill, 20 dbt models/110 tests, eight analytics queries, 46 unit/8 integration tests, hosted CI, source/history scan, performance/cleanup review, annotated release, evidence-based Q&A and profile pin are verified. No human oral rehearsal, CV edit, AWS deployment or production HA claimed.
+- State: original working warehouse/data/checkpoints unchanged; its PostgreSQL remains healthy. Only isolated review containers/network removed, review volumes retained. User's working branch/tree preserved; released source and completion evidence published separately. No pending checklist task remains; future work is optional scope beyond this roadmap.
 
 ## 6. Decisions & scope guardrails
 

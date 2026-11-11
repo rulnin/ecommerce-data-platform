@@ -1,5 +1,7 @@
 # E-Commerce Data Platform
 
+[Release v1.0.0](https://github.com/rulnin/ecommerce-data-platform/releases/tag/v1.0.0) · [Release verification](docs/release-verification.md)
+
 A local data engineering portfolio that combines historical Brazilian e-commerce
 orders, dated exchange rates and synthetic SQL Server inventory into a validated
 PostgreSQL warehouse. The central problem is correctness: an order can have several

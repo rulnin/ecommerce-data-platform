@@ -68,3 +68,14 @@ The [interview Q&A dry run](interview-qa.md) covers duplication, crash/checkpoin
 ## Reproduce
 
 Use the README from the released source. For parallel review, select a distinct COMPOSE_PROJECT_NAME and POSTGRES_PORT/SQLSERVER_PORT/AIRFLOW_PORT in the review .env, and use fresh credentials/volumes. Do not export empty generated AIRFLOW secrets; let setup read its updated .env. Load sources, run dbt/publication, generate business results, then run airflow.sh setup and scripts.verify_phase4. Stop/down only the review project and preserve working volumes. Lightweight CI uses the shared check script and ephemeral DB; full-stack verification is recorded separately.
+
+## Publication confirmation
+
+[v1.0.0 release](https://github.com/rulnin/ecommerce-data-platform/releases/tag/v1.0.0)
+is published, not a draft/prerelease. Annotated tag resolves to
+`2d9327c8fa8d0f96dabc701be8ac62170ab8a206`, which passed
+[final code CI](https://github.com/rulnin/ecommerce-data-platform/actions/runs/43016218630).
+The repository default is now main. The tag freezes that tested implementation;
+main also carries post-publication confirmation/checklist evidence. No tag was
+moved and no existing history was rewritten. All ten phases are complete under
+the user-approved scope; the CV update was waived and the project pin verified.

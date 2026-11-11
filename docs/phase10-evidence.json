@@ -1,5 +1,5 @@
 {
-  "status": "CORE_VERIFIED_RELEASE_PENDING",
+  "status": "PASS",
   "verified_at": "2026-11-11T11:54:21.682157+00:00",
   "clean_clone": {
     "status": "PASS",
@@ -163,7 +163,11 @@
     "files_scanned": 166,
     "largest_artifact_bytes": 310535,
     "secret_and_artifact_scan": "PASS",
-    "public_and_synthetic_sources_reviewed": true
+    "public_and_synthetic_sources_reviewed": true,
+    "history_blobs_scanned": 192,
+    "final_snapshot_files_scanned": 171,
+    "history_scan": "PASS",
+    "history_scan_commit": "2d9327c8fa8d0f96dabc701be8ac62170ab8a206"
   },
   "performance_review": {
     "status": "PASS",
@@ -188,12 +192,25 @@
     "status": "SUCCESS"
   },
   "release": {
-    "tag": "v1.0.0",
-    "status": "PENDING"
+    "isDraft": false,
+    "isPrerelease": false,
+    "publishedAt": "2026-11-11T11:59:31Z",
+    "tagName": "v1.0.0",
+    "targetCommitish": "2d9327c8fa8d0f96dabc701be8ac62170ab8a206",
+    "url": "https://github.com/rulnin/ecommerce-data-platform/releases/tag/v1.0.0",
+    "status": "PUBLISHED",
+    "commit": "2d9327c8fa8d0f96dabc701be8ac62170ab8a206",
+    "annotated_tag_object": "b3e0b280ee5e3c9272c3ce9a01485f8e62884a70"
   },
   "cleanup": {
     "review_containers_and_network_removed": true,
     "named_review_volumes_retained": true,
     "working_stack_untouched": true
-  }
+  },
+  "final_code_ci": {
+    "status": "SUCCESS",
+    "url": "https://github.com/rulnin/ecommerce-data-platform/actions/runs/43016218630",
+    "commit": "2d9327c8fa8d0f96dabc701be8ac62170ab8a206"
+  },
+  "default_branch": "main"
 }
