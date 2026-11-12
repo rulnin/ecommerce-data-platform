@@ -10,7 +10,6 @@
 - Refresh expression-index statistics for accurate selective-join estimates.
 - Measure replay/index behavior and verify warehouse backup/restore against all user tables.
 
-Scope: local portfolio, not a production deployment. Dimensional publication runs
-explicitly outside the Airflow DAG. Historical FX coverage is partial. Synthetic
+Scope: local portfolio, not a production deployment. Airflow runs dimensional publication and analytics verification after ingestion. Historical FX coverage is partial. Synthetic
 inventory is not real Olist stock. Dataset-derived aggregates retain Olist attribution
-and CC BY-NC-SA 4.0 data terms. See README and docs/release-verification.md for evidence.
+and CC BY-NC-SA 4.0 data terms. See README and docs/testing.md for setup and verification.

@@ -25,6 +25,7 @@ x-airflow: &airflow
     POSTGRES_USER: ${POSTGRES_USER:-ecommerce}
     POSTGRES_DB: ${POSTGRES_DB:-ecommerce}
     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    WAREHOUSE_PYTHON: /opt/warehouse/bin/python
     RAW_DATA_DIR: /opt/project/data/raw
     SQLSERVER_HOST: sqlserver
     SQLSERVER_PORT: "1433"
@@ -33,6 +34,7 @@ x-airflow: &airflow
     - ./airflow/dags:/opt/airflow/dags:ro
     - ./data/raw:/opt/project/data/raw:ro
     - airflow_logs:/opt/airflow/logs
+    - airflow_reports:/opt/project/docs
   depends_on:
     postgres:
       condition: service_healthy
@@ -88,3 +90,4 @@ services:
       retries: 12
 volumes:
   airflow_logs:
+  airflow_reports:

@@ -48,7 +48,7 @@ def main():
 
     def wait(run_id, expected):
         previous = None
-        for _ in range(300):
+        for _ in range(1200):
             state = call("GET", dag + "/dagRuns/" + run_id)["state"]
             if state != previous:
                 print(run_id, state, flush=True)
@@ -195,7 +195,16 @@ def main():
         task_states[run_id] = [
             {key: task.get(key) for key in ("task_id", "state", "try_number")} for task in instances
         ]
-        assert len(instances) == 5 and all(task["state"] == "success" for task in instances)
+        assert {task["task_id"] for task in instances} == {
+            "csv",
+            "fx",
+            "inventory",
+            "transform",
+            "quality",
+            "publish",
+            "analytics",
+        }
+        assert all(task["state"] == "success" for task in instances)
     with connection(load_settings()) as db:
         audits = db.execute(
             """SELECT dag_run_id,task_id,attempt,status,source_run_id,error_code

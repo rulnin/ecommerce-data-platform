@@ -1,4 +1,4 @@
-# dbt warehouse runtime; isolated from container-only Airflow.
+# Warehouse runtime; host .venv and isolated /opt/warehouse environment in Airflow.
 -r requirements.txt
 dbt-core==1.12.6
 dbt-postgres==1.11.0

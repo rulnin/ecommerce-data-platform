@@ -3,6 +3,9 @@
 import hashlib
 import json
 import logging
+import os
+import subprocess
+import sys
 import uuid
 from datetime import date, timedelta
 from pathlib import Path
@@ -78,6 +81,16 @@ def quality(settings, day, run_id):
     return {"checks": 4}
 
 
+def run_warehouse_module(module):
+    """Run warehouse tooling in its own environment; propagate failures to Airflow."""
+    subprocess.run(
+        [os.environ.get("WAREHOUSE_PYTHON", sys.executable), "-m", module],
+        cwd=Path(__file__).resolve().parents[2],
+        check=True,
+    )
+    return {}
+
+
 def execute_step(task_id, day, dag_run_id, attempt, failure_mode="none"):
     settings = load_settings()
     step_id = uuid.uuid4()
@@ -121,6 +134,10 @@ def execute_step(task_id, day, dag_run_id, attempt, failure_mode="none"):
             result = transform(settings, day, dag_run_id)
         elif task_id == "quality":
             result = quality(settings, day, dag_run_id)
+        elif task_id == "publish":
+            result = run_warehouse_module("src.quality.publication")
+        elif task_id == "analytics":
+            result = run_warehouse_module("scripts.verify_phase9")
         else:
             raise ValueError("Unknown orchestration step")
         with connection(settings) as db:

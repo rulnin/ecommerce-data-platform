@@ -14,3 +14,20 @@ dbt/target/
 dbt/logs/
 *.pem
 *.key
+
+# Local verification output and historical development artifacts
+docs/phase*-evidence.json
+docs/phase*-render-evidence.json
+docs/airflow-evidence/
+docs/release-evidence/
+docs/performance/
+docs/airflow-runtime.json
+docs/fx-api-probes.json
+docs/quality-report.json
+docs/analytics-results.json
+docs/interview-qa.md
+docs/walkthrough.md
+docs/release-verification.md
+docs/benchmarks.md
+ECOMMERCE_DATA_PLATFORM_TASKS.md
+docs/environment.md

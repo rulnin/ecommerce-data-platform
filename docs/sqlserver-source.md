@@ -133,4 +133,4 @@ docker compose --profile sqlserver logs --tail 50 sqlserver
 ```
 
 Keep the named volume; do not use down -v as routine cleanup. Stop/start before
-ingestion requires waiting for health again. Phase 4 orchestration is not implemented.
+ingestion requires waiting for health again. Airflow orchestrates this source as described in [the Airflow guide](airflow.md).

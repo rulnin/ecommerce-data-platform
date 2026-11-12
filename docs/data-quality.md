@@ -12,9 +12,11 @@ python -m scripts.verify_phase6
 The publication command is the supported path to consumer tables under
 `published`. The existing `marts` schema is developer output, and
 `candidate_marts` is build output that may be incomplete after a failure.
-Consumers must not read either as validated results. The Phase 4 Airflow DAG
-continues to run operational ingestion checks; it does not publish dimensional
-models. Quality publication is an explicit WSL command in this phase.
+Consumers must not read either as validated results. The Airflow DAG runs this
+same publication command after operational quality,
+then runs analytics verification. A failed publication blocks downstream tasks.
+The host command remains available for debugging when ingestion is idle.
+See [Airflow](airflow.md) and [Metabase](metabase.md).
 
 ## Rules
 

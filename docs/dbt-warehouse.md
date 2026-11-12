@@ -1,9 +1,10 @@
 # dbt dimensional warehouse
 
-The dbt Core 1.12.6 / dbt-postgres 1.11.0 project runs in the existing Python
-3.14.4 WSL `.venv`. Airflow keeps its separate dependency set. No dbt package or
-DAG change is required inside Airflow for Phase 5; the existing DAG still builds
-its operational day summary. Running dimensional dbt models is explicit.
+The project uses dbt Core 1.12.6 / dbt-postgres 1.11.0. Host commands use the
+Python 3.14.4 `.venv`. Airflow invokes warehouse publication and analytics through
+an isolated `/opt/warehouse` Python environment in its image, keeping its own
+constrained dependencies separate. See [Airflow](airflow.md) for the automated
+workflow and [Metabase](metabase.md) for dashboard setup.
 
 ## Setup and commands
 

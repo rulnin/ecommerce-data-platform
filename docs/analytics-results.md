@@ -1,6 +1,8 @@
 # E-commerce analytics — verified snapshot
 
-Generated 2026-11-11T11:26:48.143859+00:00; publication `1b57faee-629e-424e-8d8a-b0fb02ed5d92`.
+[Findings and interpretation](analytics.md) · [Documentation](README.md)
+
+Generated 2026-11-12T03:56:45.188263+00:00; publication `287970dd-9369-4f4b-96db-78bdc9d6c6dd`.
 
 Historical Olist snapshot, not a current trading dashboard. All financial values are BRL unless named USD. Revenue proxy = delivered-order item prices, excluding freight, refunds and fees. Payments are independent tender amounts. SQL runs in one read-only repeatable-read transaction.
 

@@ -104,6 +104,8 @@ def main():
     lines = [
         "# E-commerce analytics — verified snapshot",
         "",
+        "[Findings and interpretation](analytics.md) · [Documentation](README.md)",
+        "",
         f"Generated {generated}; publication `{publication_id}`.",
         "",
         "Historical Olist snapshot, not a current trading dashboard. All financial values are BRL unless named USD. Revenue proxy = delivered-order item prices, excluding freight, refunds and fees. Payments are independent tender amounts. SQL runs in one read-only repeatable-read transaction.",

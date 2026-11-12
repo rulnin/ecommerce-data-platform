@@ -26,7 +26,7 @@ with DAG(
     catchup=False,
     max_active_runs=1,
     max_active_tasks=2,
-    dagrun_timeout=timedelta(minutes=20),
+    dagrun_timeout=timedelta(minutes=40),
     default_args={
         "retries": 2,
         "retry_delay": timedelta(seconds=10),
@@ -42,4 +42,8 @@ with DAG(
     inventory = run_step.override(task_id="inventory")("inventory")
     summary = run_step.override(task_id="transform")("transform")
     checks = run_step.override(task_id="quality")("quality")
-    [csv, fx, inventory] >> summary >> checks
+    publish = run_step.override(task_id="publish", execution_timeout=timedelta(minutes=15))(
+        "publish"
+    )
+    analytics = run_step.override(task_id="analytics")("analytics")
+    [csv, fx, inventory] >> summary >> checks >> publish >> analytics

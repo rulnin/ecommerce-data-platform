@@ -12,3 +12,6 @@ docs
 .pytest_cache
 .ruff_cache
 **/__pycache__
+
+dbt/target
+dbt/logs

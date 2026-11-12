@@ -1,0 +1,31 @@
+services:
+  metabase:
+    image: metabase/metabase:v0.65.1.x
+    profiles: [metabase]
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_HOST: postgres
+      MB_DB_PORT: "5432"
+      MB_DB_DBNAME: metabase_app
+      MB_DB_USER: metabase_app
+      MB_DB_PASS: ${METABASE_DB_PASSWORD:?Run bash scripts/metabase.sh setup first}
+      MB_ENCRYPTION_SECRET_KEY: ${METABASE_ENCRYPTION_SECRET_KEY:?Run bash scripts/metabase.sh setup first}
+      JAVA_TIMEZONE: UTC
+      JAVA_OPTS: -Xmx768m
+    ports:
+      - "127.0.0.1:${METABASE_PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: 1536m
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"

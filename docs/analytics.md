@@ -1,13 +1,32 @@
-# Business SQL and verified results
+# Analytics and reporting
 
-Run `python -m scripts.verify_phase9` from the activated project venv after a
+Use [Metabase](metabase.md) for the interactive dashboard. Airflow automatically
+runs analytics verification after warehouse publication and stores reports in its
+`airflow_reports` volume; see [Airflow](airflow.md).
+
+For a local report, run `python -m scripts.verify_phase9` from the activated project venv after a
 successful quality publication. The command is read-only, uses one repeatable-read
 transaction, executes the eight files in sql/analytics and checks headline results
 against independent raw source aggregates. It writes analytics-results.md, JSON
 aggregates and phase9-evidence.json. It neither republishes data nor calls the API.
 This verifier expects the reviewed snapshot and current raw/published agreement.
 
-![Actual aggregate SQL results](screenshots/phase9-analytics.png)
+## Findings at a glance
+
+![Actual local Metabase dashboard](screenshots/metabase-dashboard.png)
+
+| Observation | Interpretation | Follow-up question |
+|---|---|---|
+| Delivered item value totals **BRL 13.22M**. | A delivered-order sales proxy, separate from payment value. | How does item value per delivered order vary across complete months? |
+| Health and beauty leads at **9.33%** of delivered item value. | The largest category still represents less than a tenth of the total. | Does its lead come from more orders or higher item value per order? |
+| Credit cards represent **78.34%** of tender value. | Payments have their own grain and denominator. | How do installment patterns vary by payment method and month? |
+| Stored FX covers **3.73%** of orders. | Complete USD sales cannot be inferred from this publication. | What dated FX history would be required before comparing USD totals? |
+
+These findings describe the historical snapshot. The follow-up questions are
+proposed analyses, not completed findings or causal claims.
+
+[Verified aggregate scorecard](screenshots/phase9-analytics.png) ·
+[Complete result tables and reproducible SQL](analytics-results.md)
 
 ## Questions and interpretation
 
@@ -22,7 +41,7 @@ This verifier expects the reviewed snapshot and current raw/published agreement.
 | [07 sellers](../sql/analytics/07_top_sellers.sql) | How concentrated is delivered value among seller ranks? | Anonymous deterministic ranks, full-population share; seller order counts overlap |
 | [08 FX coverage](../sql/analytics/08_fx_coverage.sql) | How much of the snapshot has stored historical FX? | Covered days/orders/BRL alongside partial USD; missingness is visible |
 
-The [complete result tables](analytics-results.md) and [JSON aggregates](analytics-results.json)
+The [complete result tables](analytics-results.md)
 show actual values. In this publication:
 
 - Delivered item value is BRL 13,221,498.11 versus BRL 16,008,872.12 in payment value.
@@ -42,32 +61,13 @@ No query joins item rows to payment rows. All grouping/denominators are explicit
 financial arithmetic remains PostgreSQL numeric/Decimal. The first/last months
 are incomplete snapshot periods. Rank and top-N lists are descriptive only.
 
-## Reproduce the static screenshot and diagrams (optional)
+## Static report and historical evidence
 
-The report itself requires only requirements.txt and PostgreSQL. The screenshot
-is a static rendering of those query results; it is not a deployed dashboard or
-live application. Diagram definitions remain native Mermaid in the Markdown.
-Optional capture uses the existing digest-pinned ephemeral Chromium image,
-Mermaid 11.4.1 loaded from its versioned CDN and websocket-client 1.9.0 installed
-only under /tmp. It does not change project runtime requirements.
-
-```bash
-python -m pip install --target /tmp/ecommerce-phase9-cdp websocket-client==1.9.0
-docker run --rm -d --name ecommerce-phase9-browser --memory=768m --shm-size=256m \
-  -p 127.0.0.1:9222:9222 \
-  chromedp/headless-shell@sha256:830fa77e0602cb42e5cb2cbd9237ba27b649ad69d5fb82b54713aac8b7ab4f29 \
-  --remote-allow-origins=* --window-size=1440,1100
-PYTHONPATH=/tmp/ecommerce-phase9-cdp:. python -m scripts.capture_portfolio
-docker stop ecommerce-phase9-browser
-```
-
-Capture parses/renders all Mermaid blocks in README/architecture/data-model and
-saves SVGs plus phase9-render-evidence.json. It generates the PNG directly from
-analytics-results.json, with no database credentials in the browser, no source
-rows, no filesystem mounts and no persistent web server. Internet access is
-required only for the optional renderer's versioned Mermaid module. The browser
-must be stopped after capture; its --rm container then disappears. Mermaid's
-[official API](https://mermaid.js.org/config/usage) documents parse/render.
+The checked-in aggregate report and scorecard record the verified historical snapshot.
+The Metabase screenshot captures the actual local dashboard.
+They complement the live Metabase dashboard and are not refreshed by container
+runs. The optional `scripts.capture_portfolio` renderer reproduces the historical
+report image; current architecture diagrams are maintained in Markdown.
 
 Dataset-derived aggregate report/screenshot content is attributed to Olist under
 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/); see

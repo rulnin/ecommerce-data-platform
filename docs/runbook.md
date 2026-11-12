@@ -94,7 +94,8 @@ history to manufacture success.
 
 ## Quality/publication failure
 
-Run `python -m src.quality.publication` after ingestion is idle. Nonzero status
+Airflow runs publication after operational checks. For manual recovery, run
+`python -m src.quality.publication` after ingestion is idle. Nonzero status
 means publication did not complete. Read docs/quality-report.json and the
 metadata audit, fix the relevant source contract, then rerun. Read consumer data
 from `published`, not `marts` or `candidate_marts`. Candidates may be incomplete;
@@ -167,3 +168,11 @@ empty-target full load, existing-target full replays and incremental day replays
 Only additive measured-useful lookup indexes are applied to the persistent raw
 schema. It does not reset production caches, change server memory, or claim a
 network/SQL Server/Airflow end-to-end performance number.
+
+## Metabase operations
+
+See [Metabase](metabase.md) for startup, warehouse connection and refresh settings.
+Back up `metabase_app` separately using the existing PostgreSQL backup procedure
+with that database name. Preserve `METABASE_ENCRYPTION_SECRET_KEY` with credentials.
+Airflow-generated quality/analytics reports live in `airflow_reports`; inspect them
+inside the scheduler container as described in [Airflow](airflow.md).

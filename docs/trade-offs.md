@@ -11,7 +11,7 @@
 | Separate item/payment facts | Preserves different grains and prevents financial double counting | Analysts must aggregate before joining and distinguish tender amounts from delivered sales proxy |
 | Raw JSONB plus typed staging | Keeps original source strings and source fingerprints while making transformations reviewable | JSONB expression/cast cost and specific expression indexes; a stable larger source contract may justify typed raw columns |
 | Local Docker instead of AWS | Zero required cloud spend, reviewable persistent state and deterministic local tests | Manual single-host operation, no demonstrated cloud IAM/HA/scaling; a future AWS deployment is separate work requiring cost/security/operational design |
-| Airflow and dbt dependencies isolated | Container constraints remain separate from Python 3.14 WSL tooling | Explicit WSL publication step is still outside the current DAG; do not market this as fully automated dimensional orchestration |
+| Airflow and dbt dependencies isolated | Container constraints remain separate from Python 3.14 WSL tooling | Warehouse tasks run as subprocesses in an isolated environment inside the Airflow image; rebuild after code/model changes |
 | Existing LocalExecutor | Three Airflow services with bounded concurrency suffice for the local demo | Not a distributed worker/HA deployment; scale only after measuring queueing and resource contention |
 
 Correctness gates take priority over a fast-looking dashboard: missing mappings,
@@ -24,7 +24,7 @@ Performance evidence is workload-specific: median existing-target full replay
 approximately 9.6 MiB of added indexes. Trials used one WSL host and warm/reused
 caches, with disclosed background activity. No generic throughput SLA, cloud
 performance comparison or ingestion speedup from those lookup indexes is claimed.
-See [samples and limits](benchmarks.md).
+See samples and limits (generated locally).
 
 Before a production deployment, design least-privilege identities and secret
 rotation, coordinated source/target recovery, concurrency/HA, retention, dataset

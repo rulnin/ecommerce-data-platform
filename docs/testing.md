@@ -91,4 +91,20 @@ success and intentional failure propagation are recorded separately from a
 hosted GitHub Actions result. Hosted verification passed for commit `67271c2b3f3a76d46ecd60ea6cd6bef8030e128b`:
 [successful GitHub Actions run](https://github.com/rulnin/ecommerce-data-platform/actions/runs/43006266346). Both unit and integration jobs
 completed successfully. The complete result and job links are captured in
-[Phase 7 evidence](phase7-evidence.json); P7.6 is now verified.
+Phase 7 evidence (generated locally); P7.6 is now verified.
+
+## Airflow and Metabase smoke checks
+
+The current lightweight suite has 47 unit and eight PostgreSQL integration tests.
+The warehouse subprocess test checks that a nonzero exit fails its caller.
+For full runtime validation, start the configured services, trigger a historical
+Airflow run, and confirm all seven tasks succeed. Metabase setup provisions eight
+SQL questions; open **E-commerce overview** and confirm charts return results.
+Repeated `bash scripts/metabase.sh setup` preserves the populated dashboard.
+These service checks require loaded sources and are separate from lightweight CI.
+
+Local verification on 2026-11-12: 47 unit tests and eight integration tests passed;
+Airflow run `reporting_update_1794459481` completed all seven tasks successfully.
+All eight Metabase question queries completed, reporting grants were checked for
+existing and future tables, and repeated setup preserved the dashboard. These are
+local checks of the updated workflow, not a new hosted CI result.
